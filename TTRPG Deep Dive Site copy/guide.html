@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Guide — TTRPG History</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f5f0;
+    --bg2: #ffffff;
+    --bg3: #eeebe4;
+    --bg4: #e8e4dc;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.16);
+    --text: #1c1b18;
+    --text2: #5a5850;
+    --text3: #9a9890;
+    --osr:   #c04828;
+    --osr-bg: #faecea;
+    --osr-border: #e88060;
+    --main:  #0f6e56;
+    --main-bg: #e0f4ed;
+    --main-border: #60b898;
+    --story: #5348b7;
+    --story-bg: #eeedfe;
+    --story-border: #9088d8;
+    --cross: #78674a;
+    --cross-bg: #f4f0e8;
+    --cross-border: #b8a888;
+    --shadow: 0 2px 14px rgba(0,0,0,0.07);
+    --radius: 10px;
+    --font-display: 'Georgia', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16150f; --bg2: #1e1d16; --bg3: #242318; --bg4: #2c2a1e;
+      --border: rgba(255,255,255,0.09); --border2: rgba(255,255,255,0.15);
+      --text: #e8e4d8; --text2: #a8a490; --text3: #686450;
+      --osr-bg: #2e1208; --osr-border: #a04828;
+      --main-bg: #082018; --main-border: #1a7858;
+      --story-bg: #14103a; --story-border: #6858c8;
+      --cross-bg: #201c10; --cross-border: #886848;
+    }
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 4px;
+    height: 48px;
+  }
+  .site-title { font-family: var(--font-display); font-size: 14px; color: var(--text); margin-right: 12px; white-space: nowrap; }
+  nav a { text-decoration: none; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--text2); transition: all .15s; }
+  nav a:hover { background: var(--bg3); color: var(--text); }
+  nav a.active { background: var(--text); color: var(--bg2); }
+
+  /* LAYOUT */
+  .layout {
+    display: flex; max-width: 1200px; margin: 0 auto;
+    padding: 0 16px;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  /* STICKY TOC */
+  .toc {
+    width: 220px; min-width: 180px; flex-shrink: 0;
+    position: sticky; top: 64px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 20px 0;
+    scrollbar-width: thin;
+  }
+  .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 12px; padding: 0 4px; }
+  .toc a { display: block; text-decoration: none; font-size: 12px; color: var(--text2); padding: 4px 8px; border-radius: 6px; border-left: 2px solid transparent; transition: all 0.12s; line-height: 1.4; margin-bottom: 2px; }
+  .toc a:hover { background: var(--bg3); color: var(--text); }
+  .toc a.toc-section { font-weight: 600; color: var(--text); font-size: 13px; margin-top: 10px; }
+  .toc a.toc-osr.toc-section { color: var(--osr); border-left-color: var(--osr); }
+  .toc a.toc-main.toc-section { color: var(--main); border-left-color: var(--main); }
+  .toc a.toc-story.toc-section { color: var(--story); border-left-color: var(--story); }
+  .toc a.toc-cross.toc-section { color: var(--cross); border-left-color: var(--cross); }
+  .toc a.toc-sub { padding-left: 16px; font-size: 11.5px; color: var(--text3); }
+  .toc a.toc-sub:hover { color: var(--text2); }
+  @media (max-width: 860px) { .toc { display: none; } }
+
+  /* MAIN CONTENT */
+  .guide-content {
+    flex: 1; min-width: 0;
+    padding: 32px 0 80px;
+  }
+
+  /* GUIDE HEADER */
+  .guide-title {
+    margin-bottom: 32px;
+    padding: 28px 32px;
+    background: var(--bg2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .guide-title h1 { font-family: var(--font-display); font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+  .guide-title .meta { font-size: 13px; color: var(--text3); margin-bottom: 12px; }
+  .guide-title blockquote { font-size: 13px; line-height: 1.7; color: var(--text2); border-left: 3px solid var(--border2); padding: 10px 16px; background: var(--bg3); border-radius: 0 6px 6px 0; }
+  .lineage-key { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .lk { padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; border: 1px solid; }
+  .lk-osr   { background: var(--osr-bg);   color: var(--osr);   border-color: var(--osr-border); }
+  .lk-main  { background: var(--main-bg);  color: var(--main);  border-color: var(--main-border); }
+  .lk-story { background: var(--story-bg); color: var(--story); border-color: var(--story-border); }
+
+  /* LINEAGE HEADERS */
+  h2.lineage-header {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 400;
+    margin: 44px 0 8px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    border-left: 4px solid;
+  }
+  h2.lineage-header:first-of-type { margin-top: 0; }
+
+  /* Detect lineage by content */
+  h2.lh-osr   { background: var(--osr-bg);   color: var(--osr);   border-color: var(--osr); }
+  h2.lh-main  { background: var(--main-bg);  color: var(--main);  border-color: var(--main); }
+  h2.lh-story { background: var(--story-bg); color: var(--story); border-color: var(--story); }
+  h2.lh-cross { background: var(--cross-bg); color: var(--cross); border-color: var(--cross); }
+
+  h3.section-header {
+    font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--text3); margin: 28px 0 14px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+
+  /* ENTRY CARDS */
+  .entry-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    border-left: 3px solid;
+    box-shadow: var(--shadow);
+  }
+  .entry-osr   { border-left-color: var(--osr); }
+  .entry-main  { border-left-color: var(--main); }
+  .entry-story { border-left-color: var(--story); }
+  .entry-cross { border-left-color: var(--cross); }
+
+  .entry-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .entry-name-row { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .entry-name { font-family: var(--font-display); font-size: 16px; font-weight: 400; color: var(--text); }
+  .entry-badge {
+    padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.05em; border: 1px solid; margin-top: 2px; white-space: nowrap;
+  }
+  .badge-osr   { background: var(--osr-bg);   color: var(--osr);   border-color: var(--osr-border); }
+  .badge-main  { background: var(--main-bg);  color: var(--main);  border-color: var(--main-border); }
+  .badge-story { background: var(--story-bg); color: var(--story); border-color: var(--story-border); }
+  .badge-cross { background: var(--cross-bg); color: var(--cross); border-color: var(--cross-border); }
+  .entry-meta { font-size: 12px; color: var(--text3); }
+
+  .entry-body {
+    padding: 16px 18px;
+    font-size: 13.5px; line-height: 1.75; color: var(--text2);
+  }
+  .entry-body p { margin-bottom: 10px; }
+  .entry-body p:last-child { margin-bottom: 0; }
+  .entry-body strong { color: var(--text); font-weight: 600; }
+  .entry-body em { font-style: italic; }
+
+  /* NOTE styling */
+  .entry-body p:has(strong:first-child) {
+    padding: 8px 12px;
+    background: var(--bg3);
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+
+  /* Ref tables (mechanics section) */
+  .ref-table { margin: 20px 0; }
+  .ref-table table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  .ref-table td, .ref-table th { border: 1px solid var(--border); padding: 8px 12px; vertical-align: top; }
+  .ref-table tr:first-child td { background: var(--bg3); font-weight: 500; }
+  .ref-table tr:nth-child(even) td { background: var(--bg3); }
+  .ref-table strong { color: var(--text); }
+  .ref-table em { color: var(--text2); font-style: italic; }
+
+  /* Inflection points list */
+  .guide-content ul { margin: 12px 0 16px 24px; }
+  .guide-content li { margin-bottom: 6px; font-size: 13.5px; line-height: 1.7; color: var(--text2); }
+  .guide-content li strong { color: var(--text); }
+
+  /* Narrative sections */
+  .guide-content > p { font-size: 13.5px; line-height: 1.75; color: var(--text2); margin-bottom: 12px; max-width: 700px; }
+  .guide-content blockquote { padding: 10px 16px; border-left: 3px solid var(--border2); color: var(--text3); font-style: italic; margin: 12px 0; }
+
+  /* Search */
+  .guide-search {
+    position: sticky; top: 48px; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    margin-bottom: 24px;
+  }
+  .guide-search input {
+    width: 100%; padding: 8px 14px; border-radius: 8px;
+    border: 1px solid var(--border2); background: var(--bg2);
+    color: var(--text); font-size: 13px; outline: none;
+    font-family: var(--font-body);
+  }
+  .guide-search input:focus { border-color: var(--story); }
+  .entry-card.hidden { display: none; }
+  .section-header.all-hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .layout { padding: 0 12px; gap: 0; }
+    .guide-content { padding: 20px 0 60px; }
+    .entry-body { padding: 12px 14px; }
+    .entry-header { padding: 12px 14px 10px; }
+    .guide-title { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="site-title">TTRPG History</span>
+  <a href="index.html">Home</a>
+  <a href="browser.html">Browser</a>
+  <a href="lineage.html">Lineage Map</a>
+  <a href="guide.html" class="active">Study Guide</a>
+</nav>
+
+<div class="layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#intro" class="toc-section">Introduction</a>
+    <a href="#osr-lineage" class="toc-section toc-osr">OSR &amp; Neo-Trad</a>
+    <a href="#founders" class="toc-sub">Founders &amp; Infrastructure</a>
+    <a href="#voices" class="toc-sub">Voices &amp; Critics</a>
+    <a href="#weird-osr" class="toc-sub">Weird &amp; Aesthetic OSR</a>
+    <a href="#minimalist" class="toc-sub">Minimalist &amp; Rules-Light</a>
+    <a href="#neo-trad" class="toc-sub">Neo-Trad</a>
+    <a href="#adventure-writers" class="toc-sub">Adventure Writers</a>
+    <a href="#mainstream-lineage" class="toc-section toc-main">Mainstream / D&amp;D</a>
+    <a href="#d20-era" class="toc-sub">d20 Era &amp; OGL</a>
+    <a href="#4e-team" class="toc-sub">4th Edition</a>
+    <a href="#5e-team" class="toc-sub">5th Edition</a>
+    <a href="#paizo" class="toc-sub">Paizo</a>
+    <a href="#actual-play" class="toc-sub">Actual Play Boom</a>
+    <a href="#post-ogl" class="toc-sub">Post-OGL</a>
+    <a href="#story-lineage" class="toc-section toc-story">Story Games &amp; Indie</a>
+    <a href="#forge" class="toc-sub">The Forge</a>
+    <a href="#pbta" class="toc-sub">PbtA Origins</a>
+    <a href="#fitd" class="toc-sub">Forged in the Dark</a>
+    <a href="#mystery" class="toc-sub">Mystery Design</a>
+    <a href="#cozy" class="toc-sub">Cozy Wave</a>
+    <a href="#zine-era" class="toc-sub">Zine Era</a>
+    <a href="#mechanics" class="toc-section toc-cross">Key Mechanics</a>
+    <a href="#inflections" class="toc-sub">Inflection Points</a>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="guide-content">
+
+    <div class="guide-search">
+      <input type="search" id="guideSearch" placeholder="Filter entries by name or keyword…" oninput="filterGuide(this.value)">
+    </div>
+
+    <div class="guide-title" id="intro">
+      <h1>Key Figures Study Guide</h1>
+      <div class="meta">2005 to present · A living reference · v10</div>
+      <blockquote>
+        Entries are organized by design lineage. Each card shows the figure's era, role, key works, and description.
+      </blockquote>
+      <div class="lineage-key">
+        <span class="lk lk-osr">■ OSR &amp; Neo-Trad</span>
+        <span class="lk lk-main">■ Mainstream / D&amp;D</span>
+        <span class="lk lk-story">■ Story Games &amp; Indie</span>
+      </div>
+    </div>
+
+    <!-- OSR SECTION -->
+    <h2 class="lineage-header lh-osr" id="osr-lineage">OSR &amp; Neo-Trad Lineage</h2>
+
+    <h3 class="section-header" id="founders">Founders &amp; Infrastructure (2006–2010)</h3>
+
+    <div class="entry-card entry-osr" id="matt-finch">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Matt Finch</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, legal architect, essayist · 2006 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Co-wrote OSRIC (2006) — the legal vehicle that made the retroclone movement possible. Authored Swords &amp; Wizardry and A Quick Primer for Old School Gaming, the movement's founding philosophical text: rulings over rules, player skill over character build, the gap in the rules as a feature.</p>
+        <p><strong>Key works:</strong> <em>OSRIC (2006), Swords &amp; Wizardry (2008), A Quick Primer for Old School Gaming (2008)</em></p>
+        <p><strong>Note:</strong> <em>The Primer is short and free — essential reading even if you never play S&amp;W.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="stuart-marshall">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Stuart Marshall</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, legal architect · 2006 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Co-author of OSRIC alongside Matt Finch. Did the painstaking legal work of demonstrating that AD&amp;D's mechanics could be restated under the OGL without copyright infringement. Less prominent as a public voice but foundational to the movement's infrastructure.</p>
+        <p><strong>Key works:</strong> <em>OSRIC (2006)</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="daniel-proctor">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Daniel Proctor</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Goblinoid Games) · 2007 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Author of Labyrinth Lord — probably the most practically influential first-generation retroclone. Clean, complete, and easy to write for; became the default platform for OSR adventure modules.</p>
+        <p><strong>Key works:</strong> <em>Labyrinth Lord (2007), Advanced Edition Companion (2010)</em></p>
+        <p><strong>Note:</strong> <em>Influence is less aesthetic than infrastructural — it was simply where OSR publishing happened.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="chris-gonnerman">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Chris Gonnerman</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher · 2006 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Author of Basic Fantasy RPG. Established the radical accessibility ethos of the early OSR: PDFs free, print copies at near-cost via Lulu. Basic Fantasy remains actively developed and community-supported.</p>
+        <p><strong>Key works:</strong> <em>Basic Fantasy RPG (2006, ongoing)</em></p>
+        <p><strong>Note:</strong> <em>A model for open, community-driven game development.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="voices">Voices, Critics &amp; Historians (2008–2014)</h3>
+
+    <div class="entry-card entry-osr" id="james-maliszewski">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">James Maliszewski</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Blogger, critic, historian · 2008 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Author of Grognardia (2008) — the OSR's most important early critical and historical voice. Deeply researched, historically grounded posts on old-school games and play culture. Shaped what the OSR thought it was before anyone had named it.</p>
+        <p><strong>Key works:</strong> <em>Grognardia blog (2008–2012, resumed later), Dwimmermount (megadungeon)</em></p>
+        <p><strong>Note:</strong> <em>Grognardia archives are worth reading as primary source material for OSR intellectual history.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="weird-osr">Second Wave: Weird &amp; Aesthetic OSR (2010–2019)</h3>
+
+    <div class="entry-card entry-osr" id="james-raggi">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">James Raggi IV</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Lamentations of the Flame Princess) · 2010 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Pushed the OSR in a deliberately weird, transgressive, and literary direction. Surgical mechanical departures from B/X: the Specialist class with flexible skill points; genuinely dangerous magic with corruption tables; enforced encumbrance. The adventure line — commissioning outside writers with radical latitude — introduced the 'statement adventure' as a form. Literary influences: Clark Ashton Smith, William Hope Hodgson, Arthur Machen. Golden period: 2012–2017.</p>
+        <p><strong>Key works:</strong> <em>LotFP core rules (2010), Death Frost Doom, A Red and Pleasant Land (Zak Smith), Qelong (Kenneth Hite), Veins of the Earth (Patrick Stuart)</em></p>
+        <p><strong>Note:</strong> <em>LotFP proved old-school mechanics could be a vehicle for literary seriousness and permanently raised OSR adventure-writing ambitions.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="joseph-goodman">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Joseph Goodman</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Goodman Games) · 2003 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Founded Goodman Games for d20-era dungeon crawl adventures, then pivoted to the maximalist Dungeon Crawl Classics RPG. DCC amplifies old-school energy. Key innovations: the dice chain (d3 through d30), the funnel (4 zero-level peasants; survivors become 1st level), Mighty Deeds (warriors declare combat stunts), catastrophic magic with corruption tables. Literary sources: Howard, Leiber, Moorcock, Vance, Clark Ashton Smith.</p>
+        <p><strong>Key works:</strong> <em>Dungeon Crawl Classics RPG (2012), extensive DCC adventure module line</em></p>
+        <p><strong>Note:</strong> <em>The funnel mechanic is DCC's most portable innovation — widely adopted across OSR games.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="daniel-sell">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Daniel Sell</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Melsonian Arts Council) · 2015 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Troika!, built on the Fighting Fantasy gamebook system. Characters defined entirely by 36 strange Backgrounds implying a gonzo space-fantasy multiverse never fully explained. Bag-based initiative system (tokens drawn randomly) produces genuinely chaotic combat. Setting communicated through backgrounds alone. Literary DNA: Jack Vance, Planescape, Fighting Fantasy.</p>
+        <p><strong>Key works:</strong> <em>Troika! (2015, expanded 2019)</em></p>
+        <p><strong>Note:</strong> <em>Troika!'s implied-setting-through-backgrounds approach has been widely influential on post-OSR design.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="sean-mccoy">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Sean McCoy</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Tuesday Knight Games) · 2017 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Mothership, applying OSR principles to science fiction horror. The stress and panic system mechanizes horror's core dynamic: accumulated dread makes each new threat feel worse than it would in isolation. The Warden's Operations Manual is one of the best pieces of GM-facing design documentation in the OSR era: concrete procedures over abstract advice.</p>
+        <p><strong>Key works:</strong> <em>Mothership RPG (2017, boxed set 2022), Dead Planet, A Pound of Flesh, Gradient Descent</em></p>
+        <p><strong>Note:</strong> <em>The Warden's Operations Manual is worth reading regardless of whether you run Mothership.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="pelle-togersen">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Pelle Tøgersen &amp; Johan Nohr</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer (Tøgersen) &amp; art director (Nohr); publisher: Free League · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Created Mörk Borg — doom metal-aesthetic OSR set in a world counting down to apocalypse. Primary content is Nohr's art direction: chaotic typography, hostile color schemes of bile yellow and blood orange. Every visual choice argues the game's nihilist tone. Mörk Borg Compatible license (free, no royalties) produced hundreds of products in a year. Won ENnie Gold for Best Game 2020.</p>
+        <p><strong>Key works:</strong> <em>Mörk Borg (2019), CYBER//MÖRK BORG, Pirate Borg</em></p>
+        <p><strong>Note:</strong> <em>Read Mörk Borg as a design object first. The argument is in the layout.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="minimalist">Minimalist &amp; Rules-Light OSR (2014–present)</h3>
+
+    <div class="entry-card entry-osr" id="chris-mcdowall">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Chris McDowall</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer (Bastionland Press) · 2014 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>The most rigorous application of design minimalism to OSR premises. Three-game Bastionland arc: Into the Odd (2014) stripped the OSR chassis to its essentials (no to-hit roll, no skill lists, Arcana instead of spell lists); Electric Bastionland (2020) applied the chassis to a weird early-20th-century setting with failed-career character generation and debt as campaign engine; Mythic Bastionland (2024) proved the same chassis can support full campaign play without becoming complicated. Grant Howitt on Mythic Bastionland: "a victory lap."</p>
+        <p><strong>Key works:</strong> <em>Into the Odd (2014/2022), Electric Bastionland (2020), Mythic Bastionland (2024)</em></p>
+        <p><strong>Note:</strong> <em>Read Into the Odd for the design principles. Read Mythic Bastionland to see how far they can extend.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="yochai-gal">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Yochai Gal</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer (Cairn Press) · 2020 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Cairn — a free, Creative Commons fantasy game distilling the Into the Odd chassis into its most accessible form. Downloaded hundreds of thousands of times. Cairn 1e (2020) proved free, openly licensed games could build massive communities. Cairn 2e (2024, boxed set) expanded substantially: Bonds, Omens, Backgrounds, and a new Warden's Guide.</p>
+        <p><strong>Key works:</strong> <em>Cairn 1e (2020, free), Cairn 2e Boxed Set (2024)</em></p>
+        <p><strong>Note:</strong> <em>Cairn is free. Play a session before reading anything else in the minimalist OSR space.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="neo-trad">Neo-Trad: Platform &amp; Setting (2019–present)</h3>
+
+    <div class="entry-card entry-osr" id="gavin-norman">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Gavin Norman</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (Necrotic Gnome) · 2010 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Old-School Essentials — a meticulous re-presentation of B/X that became the dominant neo-trad platform. Also the primary designer of Dolmenwood, a fully realized folk horror campaign setting. The seven Dolmenwood factions — the Drune, the Cold Prince, the human nobility, the breggle nobility, the Pluritine Church, the witches, and Ataнuwë — are the primary campaign engine.</p>
+        <p><strong>Key works:</strong> <em>Old-School Essentials (2019), Dolmenwood (2024)</em></p>
+        <p><strong>Note:</strong> <em>OSE is refinement done exceptionally well; Dolmenwood is the fullest neo-trad realization.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="jeff-talanian">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Jeff Talanian</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Designer, publisher (North Wind Adventures) · 2009 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Hyperborea — a Sword &amp; Sorcery OSR game drawing on Clark Ashton Smith, Robert E. Howard, and H.P. Lovecraft. Represents the OSR's deep engagement with pulp fantasy literature as source material.</p>
+        <p><strong>Key works:</strong> <em>Hyperborea (2012, 3rd ed. 2022)</em></p>
+        <p><strong>Note:</strong> <em>Strong example of OSR design with a tight literary-aesthetic identity.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="kelsey-dionne">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Kelsey Dionne</h3><span class="entry-badge badge-osr">OSR / Crossover</span></div>
+        <div class="entry-meta">Designer, publisher (The Arcane Library) · 2017 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Shadowdark RPG — the most commercially successful OSR-adjacent game of the post-OGL era. Bridges 5e and OSR: d20 roll-over resolution familiar to 5e players, but with OSR lethality, resource management, and procedural exploration. Most distinctive mechanic: real-time torches, which burn out in 60 actual minutes. Kickstarted at $1.3M in February 2023. Won four gold ENNIEs in 2024 (Product of the Year, Best Game, Best Rules, Best Layout). Design philosophy: "D&amp;D without all the stuff that makes it less fun."</p>
+        <p><strong>Key works:</strong> <em>The Secrets of Skyhorn Lighthouse (2017), Shadowdark RPG (2023)</em></p>
+        <p><strong>Note:</strong> <em>Shadowdark demonstrates OSR design insights can reach mainstream audiences when packaged with sufficient accessibility. Four ENNIEs in 2024 was a clean sweep.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="adventure-writers">Notable Adventure Writers &amp; Commissioners</h3>
+
+    <div class="entry-card entry-osr" id="zak-smith">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Zak Smith (Zak S.)</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Adventure writer, artist, blogger · 2012 – 2019</div>
+      </div>
+      <div class="entry-body">
+        <p>Wrote A Red and Pleasant Land (2014) for LotFP — hallucinatory Alice-in-Wonderland horror setting. Won four ENnie Awards. Also wrote Vornheim: The Complete City Kit. Credible abuse allegations surfaced in 2019; he is now largely excluded from the community.</p>
+        <p><strong>Key works:</strong> <em>A Red and Pleasant Land (2014), Vornheim: The Complete City Kit (2011), Frostbitten &amp; Mutilated (2018)</em></p>
+        <p><strong>Note:</strong> <em>His design work — especially the table-driven emergent structures of ARPL — remains influential despite his removal.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="kenneth-hite">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Kenneth Hite</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Adventure writer, game designer (GUMSHOE, Trail of Cthulhu) · 2013 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Professional game designer who wrote Qelong (2013) for LotFP — a Southeast Asian-inspired war-ravaged pointcrawl. One of the most methodical and ethnographically grounded pieces of OSR design in the catalog. Also designed the GUMSHOE investigative system for Pelgrane Press.</p>
+        <p><strong>Key works:</strong> <em>Qelong (2013, LotFP), Trail of Cthulhu, Night's Black Agents, Dracula Dossier</em></p>
+        <p><strong>Note:</strong> <em>Qelong is quietly one of the best OSR adventure products.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="patrick-stuart">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Patrick Stuart</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Adventure writer, blogger (False Machine) · 2014 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Author (with Scrap Princess) of Veins of the Earth (2016, LotFP) — an underground ecology system generator written in genuinely strange prose poetry. Also wrote Deep Carbon Observatory. Blog False Machine is a sustained piece of OSR design criticism.</p>
+        <p><strong>Key works:</strong> <em>Deep Carbon Observatory (2014), Veins of the Earth (2016, LotFP), Silent Titans (2019)</em></p>
+        <p><strong>Note:</strong> <em>Veins of the Earth: read it as weird fiction that happens to include tables.</em></p>
+      </div>
+    </div>
+
+    <!-- MAINSTREAM SECTION -->
+    <h2 class="lineage-header lh-main" id="mainstream-lineage">Mainstream / D&amp;D Lineage</h2>
+
+    <h3 class="section-header" id="d20-era">The d20 Era: WotC Leadership &amp; the OGL (2000–2007)</h3>
+
+    <div class="entry-card entry-main" id="peter-adkison">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Peter Adkison</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">CEO, Wizards of the Coast; architect of the OGL · 1990 – 2001</div>
+      </div>
+      <div class="entry-body">
+        <p>Founded WotC, grew it through Magic: The Gathering, and led the acquisition of TSR in 1997. Made the decision to publish D&amp;D 3e under the Open Game License — influenced by open source software culture. The OGL is his most lasting legacy, both in the ecosystem it created and in the 2023 crisis it survived.</p>
+        <p><strong>Key works:</strong> <em>Open Game License (2000), D&amp;D 3rd Edition (publisher)</em></p>
+        <p><strong>Note:</strong> <em>The OGL decision was the single most consequential publishing act in post-1990 TTRPG history.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="monte-cook">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Monte Cook, Jonathan Tweet &amp; Skip Williams</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Lead designers, D&amp;D 3rd Edition · 2000</div>
+      </div>
+      <div class="entry-body">
+        <p>Three-person team who rebuilt D&amp;D for WotC. Cook: core design architecture. Tweet: structural thinking from Ars Magica and Everway. Williams: Monster Manual and rules editing. Together: unified d20 system. Cook later founded Monte Cook Games (Numenera). Tweet co-designed 13th Age with Rob Heinsoo.</p>
+        <p><strong>Key works:</strong> <em>D&amp;D 3rd Edition (2000); Cook: Ptolus (2006), Numenera (2013); Tweet &amp; Heinsoo: 13th Age (2013)</em></p>
+        <p><strong>Note:</strong> <em>13th Age is worth knowing as the most thoughtful synthesis of 3e, 4e, and OSR lessons.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="4e-team">The 4th Edition Design Team (2008)</h3>
+
+    <div class="entry-card entry-main" id="rob-heinsoo">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Rob Heinsoo, Andy Collins &amp; James Wyatt</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Lead designers, D&amp;D 4th Edition · 2008</div>
+      </div>
+      <div class="entry-body">
+        <p>Led the D&amp;D 4e design. Their brief was real: fix 3.5's martial/caster imbalance and combat length. Solutions — unified power structure (At-Will/Encounter/Daily), explicit combat roles, healing surges, minions — were coherent and effective. The controversy was about whether those were the right problems. 4e's commercial failure catalyzed both Pathfinder and the OSR. Heinsoo went on to design 13th Age with Jonathan Tweet.</p>
+        <p><strong>Key works:</strong> <em>D&amp;D 4th Edition (2008); Heinsoo: 13th Age (2013, with Tweet)</em></p>
+        <p><strong>Note:</strong> <em>4e's rehabilitation is ongoing. Its mechanical fairness and minion rules are now widely appreciated.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="5e-team">5th Edition Leadership</h3>
+
+    <div class="entry-card entry-main" id="mike-mearls">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Mike Mearls &amp; Jeremy Crawford</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Lead designers, D&amp;D 5th Edition · 2012 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Principal architects of D&amp;D 5e (2014). Mearls led the open playtest (175,000+ participants) and design philosophy of broad accessibility. Crawford became primary rules authority. 5e's core innovations: bounded accuracy (caps level scaling), advantage/disadvantage (collapses situational modifiers), proficiency bonus (single scaling mechanic), short/long rest differentiation.</p>
+        <p><strong>Key works:</strong> <em>D&amp;D 5th Edition (2014), ongoing Unearthed Arcana material</em></p>
+        <p><strong>Note:</strong> <em>Mearls departed WotC in the OGL crisis aftermath; Crawford remains.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="paizo">Paizo: The Pathfinder Story (2007–present)</h3>
+
+    <div class="entry-card entry-main" id="erik-mona">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Erik Mona</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Publisher, Paizo; editor Dragon &amp; Dungeon magazines · 2002 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Chief creative officer of Paizo. As editor of Dragon and Dungeon, oversaw the best adventure writing of the 3e era. When WotC ended the license in 2007, central to Paizo's pivot to Pathfinder. Led ORC License development in 2023, positioning Paizo as steward of the open gaming commons.</p>
+        <p><strong>Key works:</strong> <em>Dragon &amp; Dungeon magazines (2002–2007), Pathfinder product line, ORC License (2023)</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="james-jacobs">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">James Jacobs</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Creative director, Paizo · 2002 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Primary architect of the Golarion setting. Developed the maximalist "every fantasy genre in one world" approach: Mediterranean, Scandinavian, Egyptian, East Asian, post-apocalyptic, gothic horror, undead-ruled, and more. Every region is a potential adventure path. Commercial strategy as much as creative vision.</p>
+        <p><strong>Key works:</strong> <em>Golarion setting (primary architect), Curse of the Crimson Throne, Return of the Runelords</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="jason-bulmahn">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Jason Bulmahn</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Lead designer, Pathfinder 1st Edition · 2007 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Primary mechanical designer of PF1e. Brief: take D&amp;D 3.5, fix what was broken, keep what worked. The Pathfinder open playtest (2007–2009) was the first major TTRPG open playtest, predating D&amp;D Next by three years. PF1e outsold D&amp;D for several years during the 4e era.</p>
+        <p><strong>Key works:</strong> <em>Pathfinder 1st Edition (2009), Pathfinder open playtest (2007–2009)</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="logan-bonner">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Logan Bonner</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Lead designer, Pathfinder 2nd Edition · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Led the ground-up rebuild of Pathfinder. Core innovations: three-action economy (activities cost one, two, or three actions); four-outcome degree-of-success on every roll (critical success/success/failure/critical failure); layered ancestry/background/class creation. More accessible than PF1e, more mechanically deep than 5e. OGL crisis substantially accelerated PF2e adoption.</p>
+        <p><strong>Key works:</strong> <em>Pathfinder 2nd Edition (2019), Pathfinder 2e Remaster (2023)</em></p>
+        <p><strong>Note:</strong> <em>The three-action economy has propagated to other games and represents a genuine design advance.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="actual-play">The Actual Play Moment (2015–2023)</h3>
+
+    <div class="entry-card entry-main" id="matthew-mercer">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Matthew Mercer</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">GM, voice actor, publisher (Darrington Press) · 2015 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>GM of Critical Role — the actual play series that most powerfully mainstreamed D&amp;D 5e. His performative GM style defined public expectations of TTRPG play for a generation of new players. Critical Role's animated series Kickstarter raised $11M in 24 hours (2019). The tension between "Critical Role style" play and traditional play cultures drove significant online discourse throughout the 5e era.</p>
+        <p><strong>Key works:</strong> <em>Critical Role (2015–present), Tal'Dorei Campaign Setting, Candela Obscura RPG</em></p>
+        <p><strong>Note:</strong> <em>Critical Role's influence on player expectations — for better and worse — is impossible to overstate.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="post-ogl">Post-OGL &amp; New Competitors (2023–present)</h3>
+
+    <div class="entry-card entry-main" id="matt-colville">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Matt Colville</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Designer, publisher, YouTuber (MCDM Productions) · 2016 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>YouTube creator whose Running the Game series became essential viewing for new D&amp;D GMs. Founded MCDM to produce D&amp;D supplements before committing to Draw Steel, a fully independent non-OGL fantasy RPG. His diagnosis of 5e's failures: not that combat is overemphasized, but that the combat it emphasizes isn't good enough. Draw Steel addresses this through a more varied action economy, tactically distinctive monsters, and hero classes designed around unique contributions. The design has visible 4e DNA. Draw Steel Kickstarted at $4.7M (2024).</p>
+        <p><strong>Key works:</strong> <em>Running the Game (YouTube, 2016–present), Flee Mortals! (2023), Draw Steel (2024)</em></p>
+        <p><strong>Note:</strong> <em>Draw Steel is the most prominent attempt to rebuild mainstream fantasy combat design from scratch.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="robert-schwalb">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Robert Schwalb</h3><span class="entry-badge badge-main">Mainstream</span></div>
+        <div class="entry-meta">Designer, publisher (Schwalb Entertainment) · 2015 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Veteran mainstream designer (Green Ronin, WotC) who designed two significant independent games. Shadow of the Demon Lord (2015) was critically acclaimed for its system but limited by its intensely grimdark register. Shadow of the Weird Wizard (2024) — most anticipated TTRPG of 2024 per EN World poll — uses the same engine with a heroic register. His Paths system (Novice/Expert/Master) produces deep customization without front-loading complexity.</p>
+        <p><strong>Key works:</strong> <em>Shadow of the Demon Lord (2015), Shadow of the Weird Wizard (2024)</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-main" id="crossover-design">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Crossover &amp; Mainstream-Adjacent Design</h3><span class="entry-badge badge-main">Crossover</span></div>
+        <div class="entry-meta">Games occupying the space between D&D mainstream and indie</div>
+      </div>
+      <div class="entry-body">
+        <p>The OGL crisis (2023) and growing design literacy across all audiences substantially expanded the crossover space — games too mechanically ambitious for the mainstream, too well-produced for the pure indie market. Notable designers in this space include Francesco Nepitello (The One Ring 2e), Nils Hintze (Vaesen), and Spenser Starke &amp; Rowan Hall (Daggerheart).</p>
+      </div>
+    </div>
+
+    <!-- STORY GAMES SECTION -->
+    <h2 class="lineage-header lh-story" id="story-lineage">Story Games &amp; Indie Lineage</h2>
+
+    <h3 class="section-header" id="forge">The Forge &amp; Indie Foundations (2001–2012)</h3>
+
+    <div class="entry-card entry-story" id="ron-edwards">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Ron Edwards &amp; Clinton R. Nixon</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Co-founders, The Forge · 2001 – 2012</div>
+      </div>
+      <div class="entry-body">
+        <p>Co-founded The Forge forum (~2001) — the central hub for indie TTRPG design theory. Edwards developed GNS theory (Gamist/Narrativist/Simulationist), later expanded into the Big Model. The Forge's core insight: mechanical structure shapes what play is easy and what is hard; designing deliberately beats designing accidentally. The Forge closed in 2012. Its intellectual legacy — a trained generation of designers — is real. Its failures (insularity, the "brain damage" rhetoric) are also real.</p>
+        <p><strong>Key works:</strong> <em>Edwards: Sorcerer (2001), GNS theory essays, Trollbabe; Nixon: Donjon, various Forge games</em></p>
+        <p><strong>Note:</strong> <em>GNS theory is controversial and substantially revised, but essential context for understanding PbtA and FitD design.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="luke-crane">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Luke Crane</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer, publisher (Burning Wheel HQ) · 2002 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Burning Wheel — built around Beliefs, Instincts, and Traits. Core philosophy: mechanical weight should sit on what characters believe and want, not what they can do. Also designed Mouse Guard RPG and Torchbearer. Later worked at Kickstarter.</p>
+        <p><strong>Key works:</strong> <em>Burning Wheel (2002, revised 2011), Mouse Guard RPG (2008), Torchbearer (2013)</em></p>
+        <p><strong>Note:</strong> <em>Burning Wheel is demanding but rewards close study as a design object.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="robin-laws">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Robin D. Laws</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer (Pelgrane Press); creator of GUMSHOE · 2007 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of the GUMSHOE investigative system, which addressed the mystery genre's failure state: if you have the relevant investigative ability and look in the right place, you automatically find the clue. Skills are spent for additional information, not clue discovery. Solved stalled investigation while leaving the gotcha and information asymmetry problems for Brindlewood Bay to later address.</p>
+        <p><strong>Key works:</strong> <em>GUMSHOE system, Trail of Cthulhu (2008), Night's Black Agents (2012), Dracula Dossier (2016)</em></p>
+        <p><strong>Note:</strong> <em>GUMSHOE's automatic clue-finding principle is the most influential mystery RPG innovation before the Conspiracy mechanic.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="pbta">PbtA Origins &amp; Diaspora (2004–2022)</h3>
+
+    <div class="entry-card entry-story" id="vincent-baker">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">D. Vincent Baker &amp; Meguey Baker</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designers (lumpley games) · 2004 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Vincent Baker designed Dogs in the Vineyard (2004) — pre-PbtA touchstone about Mormon frontier moral authority. Then co-designed Apocalypse World (2010) with Meguey Baker. AW's core innovations: Moves as discrete triggered fictional actions with specific mechanical outcomes; 2d6+stat resolution with three outcome bands (10+, 7–9, 6–); the MC's Agenda and Principles as designed constraints on GM authority; "playing to find out" as a GM philosophy. Meguey Baker's contributions to AW's social fiction and playbook design are significant and often underacknowledged. The entire PbtA family descends from this work.</p>
+        <p><strong>Key works:</strong> <em>Dogs in the Vineyard (2004), Apocalypse World (2010, 2nd ed. 2016), Murderous Ghosts, Apocalypse Keys</em></p>
+        <p><strong>Note:</strong> <em>Apocalypse World is essential reading for the story games lineage. Read the MC chapter especially.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="avery-alder">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Avery Alder</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer (Buried Without Ceremony) · 2012 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Monsterhearts (2012) — PbtA about teenage monsters with the Strings economy (social leverage tokens) and Conditions replacing damage. The Quiet Year (2013) established collaborative map-making as a design genre and deeply influenced the cozy wave. Dream Askew (2018) is GM-less PbtA with an innovative token economy. All three games center queer experience and emotional complexity.</p>
+        <p><strong>Key works:</strong> <em>Monsterhearts (2012), The Quiet Year (2013), Dream Askew (2018)</em></p>
+        <p><strong>Note:</strong> <em>The Quiet Year is widely used in design education and is proto-cozy in its approach to collective attention.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="sage-latorra">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Sage LaTorra &amp; Adam Koebel</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designers · 2012 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Co-designers of Dungeon World — PbtA applied to D&amp;D-style dungeon fantasy. The primary gateway for D&amp;D players into PbtA. Innovations include Bonds (relationships expressed as specific fictional statements), Fronts (organized threats with countdown clocks), and the end-of-session XP move. Won multiple ENnie awards. LaTorra later worked on D&amp;D 5e at WotC. Koebel had a serious controversy in 2020.</p>
+        <p><strong>Key works:</strong> <em>Dungeon World (2012)</em></p>
+        <p><strong>Note:</strong> <em>Dungeon World is the most accessible entry point into PbtA for D&amp;D players.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="brendan-conway">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Brendan Conway</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer (Magpie Games) · 2016 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Lead designer of Masks: A New Generation — PbtA about teenage superheroes. The Influence/Labels system is the central innovation: NPCs and other PCs can shift your character's Labels (Freak, Danger, Savior, Superior, Mundane), affecting mechanical options. Your identity is not fixed; it's being shaped by people around you. A precise mechanical translation of teen superhero fiction's actual subject matter.</p>
+        <p><strong>Key works:</strong> <em>Masks: A New Generation (2016)</em></p>
+        <p><strong>Note:</strong> <em>The Influence/Labels system is a model of mechanics designed specifically for genre thematic content.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="hamish-cameron">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Hamish Cameron</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer · 2016 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of The Sprawl — PbtA cyberpunk specifically targeting the corporate thriller mode of William Gibson. The Clock system tracks multiple corporate interests simultaneously, making systemic power mechanically visible. Understood that cyberpunk is a genre defined by systemic power rather than individual heroism and designed accordingly.</p>
+        <p><strong>Key works:</strong> <em>The Sprawl (2016)</em></p>
+        <p><strong>Note:</strong> <em>The Sprawl's clock system anticipated FitD's clocks and influenced how PbtA designers approach faction mechanics.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="fitd">Forged in the Dark (2017–present)</h3>
+
+    <div class="entry-card entry-story" id="john-harper">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">John Harper</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer (One Seven Design) · 2006 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Blades in the Dark — the FitD origin. Innovations: Position and Effect (two-axis resolution: position = risk level, effect = impact magnitude; both set before rolling); Flashbacks (declare mid-scene you prepared; pay stress; narrate preparation); Clocks (circular progress trackers); Devil's Bargain (take an extra die in exchange for a complication regardless of outcome); Stress and Trauma (trauma permanently changes who the character is); Score/Downtime structure; Crew as a mechanical entity; Faction system as campaign engine.</p>
+        <p><strong>Key works:</strong> <em>Lady Blackbird (2009, free), Blades in the Dark (2017), Agon (rev. 2019, with Sean Nittner)</em></p>
+        <p><strong>Note:</strong> <em>Lady Blackbird is free and worth reading for design economy. Blades is a teaching text as much as a game.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="grant-howitt">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Grant Howitt &amp; Christopher Taylor</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designers (Rowan, Rook and Decard) · 2016 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>The most fully realized expression of British indie TTRPG design. Howitt (journalist background): precise, economical, deadpan-funny writing. Taylor (theatre background): design sensibility around dramatic structure. Howitt's solo one-page catalog — Honey Heist, Crash Pandas, Goblin Quest — established the high-concept one-page game as a recognized design form. Spire: The City Must Fall (2018): dark elf revolutionaries in an oppressed city; domain stress tracks; Fallout tables; explicitly political. Heart: The City Beneath (2021): psychedelic dungeon-delve companion; the dungeon reshapes itself around delvers' desires.</p>
+        <p><strong>Key works:</strong> <em>Honey Heist (2017, free), Spire: The City Must Fall (2018), Heart: The City Beneath (2021)</em></p>
+        <p><strong>Note:</strong> <em>RR&amp;D represents a distinctly British approach — literary, political, high-concept.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="stras-acimovic">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Stras Acimovic &amp; John LeBoeuf-Little</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designers · 2018 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designers of Band of Blades — the most significant FitD game after Blades itself. Applied FitD to military fantasy (retreating army in a losing war against undead). Characters play both individual soldiers and rotating command positions that change between missions, adding strategic-level decision-making. Also co-designed Scum and Villainy (2018) — FitD applied to space opera, in which the ship becomes a mechanical crew member.</p>
+        <p><strong>Key works:</strong> <em>Band of Blades (2019), Scum and Villainy (2018)</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="mystery">Mystery Design (2018–present)</h3>
+
+    <div class="entry-card entry-story" id="jason-cordova">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Jason Cordova</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer, podcaster (Magpie Games / The Gauntlet) · 2018 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Brindlewood Bay — the game that solved the mystery genre's fundamental structural problem. The Conspiracy mechanic: the Keeper prepares clues and a Conspiracy (thematic dark elements suggesting the mystery's shape) but not a solution; players investigate; the Theorize move has players construct an explanation; if plausible, it becomes true. This eliminates the gotcha problem, the railroad problem, and the information asymmetry problem. Cordova also founded The Gauntlet — an online community and podcast influential on how indie communities organize.</p>
+        <p><strong>Key works:</strong> <em>Brindlewood Bay (2020), The Between (2022)</em></p>
+        <p><strong>Note:</strong> <em>The Conspiracy mechanic is a genuine design breakthrough and one of the most significant structural innovations in PbtA.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="cozy">The Cozy &amp; Quiet Wave</h3>
+
+    <div class="entry-card entry-story" id="jay-dragon">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Jay Dragon</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer (Possum Creek Games) · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Wanderhome — the fullest realization of cozy wave aesthetic ambitions. Set in Haeth, a world of small animal people traveling through a pastoral landscape after a war that is over. No combat, no experience points, no conventional advancement. Token economy creates shared resource investment; generosity is mechanically visible. Moves organized around activities — arriving, sharing a meal, resting, saying goodbye — rather than character capabilities.</p>
+        <p><strong>Key works:</strong> <em>Wanderhome (2021), various Possum Creek Games titles</em></p>
+        <p><strong>Note:</strong> <em>Wanderhome's public design document is worth reading as a statement of design philosophy.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="shawn-tomkin">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Shawn Tomkin</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Ironsworn — the game that established solo TTRPGs as a legitimate design category. The Vow system is the central innovation: characters make formal commitments (ranked Troublesome to Epic) tracked on progress clocks; the Fulfill Your Vow move rolls against the progress track, so likelihood of success scales with actual narrative engagement. Released for free; enormous word-of-mouth success. Starforged (2022) applied the same logic to space opera.</p>
+        <p><strong>Key works:</strong> <em>Ironsworn (2019, free), Ironsworn: Starforged (2022)</em></p>
+        <p><strong>Note:</strong> <em>Ironsworn is free. Play several sessions before reading anything theoretical about solo TTRPG design.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="tim-hutchings">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Tim Hutchings</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of Thousand Year Old Vampire — a solo journaling game about a vampire across centuries. The forgetting mechanic is one of the most emotionally affecting in recent TTRPG design: characters have limited memory slots; gaining new memories requires erasing old ones. As the vampire accumulates centuries, they lose most of what has happened to them. Demonstrated that solo play can explore emotional registers unavailable in most group TTRPG designs.</p>
+        <p><strong>Key works:</strong> <em>Thousand Year Old Vampire (2019)</em></p>
+        <p><strong>Note:</strong> <em>The forgetting mechanic is worth understanding as a design object regardless of whether you play the game.</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story" id="alex-roberts">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Alex Roberts</h3><span class="entry-badge badge-story">Story Games &amp; Indie</span></div>
+        <div class="entry-meta">Designer · 2019 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Designer of For the Queen (2019) — a card game for two to six players about companions journeying to a Queen they serve. Explicitly queer and romantic without combat or conflict. Ends when someone draws the card asking "do you protect the Queen?" — the only moment of conflict, carrying enormous weight from everything preceding it. Also co-designed Star Crossed (2019) — a two-player game using a Jenga tower as its central mechanic.</p>
+        <p><strong>Key works:</strong> <em>For the Queen (2019), Star Crossed (2019, with Beau Jágr Sheldon)</em></p>
+        <p><strong>Note:</strong> <em>For the Queen is an ideal introduction to GM-less and low-conflict design.</em></p>
+      </div>
+    </div>
+
+    <h3 class="section-header" id="zine-era">Zine Era &amp; Publishing Ecosystem</h3>
+
+    <div class="entry-card entry-osr" id="cristin-matt-kelley">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Cristin &amp; Matt Kelley</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Founders, Exalted Funeral · 2018 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Founded Exalted Funeral in 2018 — the most important independent TTRPG retailer and publisher of the zine era. Curated OSR and indie games with genuine aesthetic taste, offered Kickstarter fulfillment services. Co-publishers of Old-School Essentials and the Dolmenwood Kickstarter campaign. An Exalted Funeral stock became a quality signal in a crowded market.</p>
+        <p><strong>Key works:</strong> <em>Exalted Funeral retail &amp; publishing operation (2018–present), Old-School Essentials co-publisher</em></p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr" id="nieudan-revenu">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Éric Nieudan &amp; Olivier Revenu</h3><span class="entry-badge badge-osr">OSR</span></div>
+        <div class="entry-meta">Editor &amp; publisher, Knock! magazine (The Merry Mushmen) · 2020 – present</div>
+      </div>
+      <div class="entry-body">
+        <p>Created Knock! magazine — the closest thing the zine-era OSR had to a flagship anthology. Launched the Knock! Kickstarter in December 2020 (1,600+ backers). Each 200+ page full-colour issue collects adventures, essays, random tables, house rules, and design discussions from across the OSR community.</p>
+        <p><strong>Key works:</strong> <em>Knock! magazine issues 1–4 (2021–present); Nieudan: Macchiato Monsters; Revenu: Battles magazine</em></p>
+        <p><strong>Note:</strong> <em>Any issue of Knock! provides a cross-section of the era's best OSR design thinking.</em></p>
+      </div>
+    </div>
+
+    <!-- MECHANICS SECTION -->
+    <h2 class="lineage-header lh-cross" id="mechanics">Key Mechanics Reference</h2>
+    <p style="margin-bottom:20px;font-size:13px;color:var(--text3)">A reference to the most significant mechanical innovations across all three lineages.</p>
+
+    <h3 class="section-header">OSR Mechanics</h3>
+
+    <div class="entry-card entry-osr">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">The Dungeon Turn</h3><span class="entry-badge badge-osr">OSR</span></div>
+      </div>
+      <div class="entry-body">
+        <p>A ten-minute in-game time unit governing OSR dungeon exploration. Each turn: check for wandering monsters (typically 1-in-6), track light sources (torches last 6 turns), deplete resources. Every action costs turns. Creates resource pressure and makes the dungeon feel like a living place with its own rhythms. The wandering monster is primarily a time tax, not a combat encounter: it punishes slow, noisy, inefficient play and rewards careful resource management.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Reaction Rolls</h3><span class="entry-badge badge-osr">OSR</span></div>
+      </div>
+      <div class="entry-body">
+        <p>When characters encounter a monster or NPC, the referee rolls 2d6 on a reaction table (2 = hostile attack, 12 = friendly). Most results fall in the middle — uncertain, wary, indifferent. Design argument: most encounters are not fights. They're negotiations, standoffs, opportunities for parley. High Charisma modifies reaction rolls, making the stat genuinely useful. Creates encounter culture where players consider whether they can avoid, negotiate, or trick a problem before committing to violence.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-osr">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Hexcrawl / Pointcrawl</h3><span class="entry-badge badge-osr">OSR</span></div>
+      </div>
+      <div class="entry-body">
+        <p>Hexcrawl: wilderness exploration on a hex-grid map. Players navigate by direction; referee tracks position on a master map; players build their own map through discovery. Each hex traversed triggers encounter and resource checks. Makes the space between dungeons mechanically meaningful. Pointcrawl: maps the region as a network of notable points connected by paths rather than a uniform grid. Ben Robbins' West Marches model (2007) extended these into a full campaign framework: players organize their own sessions, choose their own objectives, and explore a persistent shared world.</p>
+      </div>
+    </div>
+
+    <h3 class="section-header">Story Games Mechanics</h3>
+
+    <div class="entry-card entry-story">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">The 2d6 Bell Curve</h3><span class="entry-badge badge-story">PbtA</span></div>
+      </div>
+      <div class="entry-body">
+        <p>PbtA's resolution mechanic rolls 2d6 + stat. Unlike the flat d20 distribution, 2d6 clusters around the middle: with a +1 modifier, roughly 42% of rolls land in the 7–9 partial success band vs. 28% miss and 30% full success. Partial success is statistically the most common outcome by design. Baker calibrated the system to make complication the norm rather than the exception — a scene-generator rather than a scene-ender.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Hard Moves and Soft Moves</h3><span class="entry-badge badge-story">PbtA</span></div>
+      </div>
+      <div class="entry-body">
+        <p>The MC/GM move taxonomy in Apocalypse World. A soft move announces impending badness without fully delivering it — creates tension, gives players a chance to react. A hard move delivers the consequence immediately and fully, with no opportunity to react. Hard moves follow missed rolls directly or follow up on soft moves the players ignored. Mixing soft and hard moves creates narrative rhythm: soft moves build suspense, hard moves confirm the world is real and consequences are actual.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Stress vs. Hit Points</h3><span class="entry-badge badge-story">FitD / Indie</span></div>
+      </div>
+      <div class="entry-body">
+        <p>HP is undifferentiated attrition. Stress systems replace this with tracks that produce varied, narratively specific consequences. Blades in the Dark: Stress is both a spendable resource (fuel flashbacks, resist consequences, push for extra effect) and a harm track; filling it causes Trauma (permanent character changes: Cold, Haunted, Obsessed, Paranoid). Spire: five domain stress tracks produce domain-specific Fallout. Mothership: accumulated Stress triggers Panic rolls with escalating consequences, mechanizing horror's core dynamic. Conditions (Monsterhearts) are a related approach: named states that specifically limit what a character can do and require fictional resolution to clear.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-story">
+      <div class="entry-header">
+        <div class="entry-name-row"><h3 class="entry-name">Position and Effect (FitD)</h3><span class="entry-badge badge-story">FitD</span></div>
+      </div>
+      <div class="entry-body">
+        <p>Blades in the Dark's two-axis resolution replaces simple pass/fail. Position (Controlled/Risky/Desperate) represents the risk level. Effect (Limited/Standard/Great) represents the impact magnitude. Both are set before rolling. This means every roll is a conversation: "you're in a Desperate position, but if you succeed, the Effect is Great." Players can push for better position or accept worse effect. Separates the question "how dangerous is this?" from "how impactful is this?"</p>
+      </div>
+    </div>
+
+    <h3 class="section-header">Cross-Lineage Mechanics</h3>
+
+    <div class="entry-card entry-cross" style="border-left-color:var(--cross)">
+      <div class="entry-header" style="background:var(--cross-bg)">
+        <div class="entry-name-row"><h3 class="entry-name">Safety Tools</h3><span class="entry-badge badge-cross">Cross-Lineage</span></div>
+      </div>
+      <div class="entry-body">
+        <p>Explicit mechanisms allowing players to modify, pause, or stop play when content becomes unwanted. X-Card (John Stavropoulos, 2012): any player taps a physical card; content is edited out immediately, no questions asked. Lines and Veils: Lines are content that won't appear at all; Veils are content that occurs but isn't depicted in detail; both established during Session Zero. Script Change (Brie Beau Sheldon): Fast Forward, Rewind, Pause, Frame — a more granular in-session toolkit. Design argument: safety tools don't prevent difficult content, they enable it.</p>
+      </div>
+    </div>
+
+    <div class="entry-card entry-cross" style="border-left-color:var(--cross)">
+      <div class="entry-header" style="background:var(--cross-bg)">
+        <div class="entry-name-row"><h3 class="entry-name">Sandbox vs. Railroad</h3><span class="entry-badge badge-cross">Cross-Lineage</span></div>
+      </div>
+      <div class="entry-body">
+        <p>Sandbox: campaign structured around a living world with its own factions and momentum; players set their own goals; no predetermined destination. Railroad: campaign structured around a predetermined narrative path; players' choices are accommodated but major plot beats occur regardless. The OSR treats this as a question with a defensible answer: the original D&amp;D design was sandbox in intent and later editions' drift toward scripted narrative was a design failure. PbtA offers a third position: "play to find out" — the MC prepares situations rather than plots or a fully realized world. The West Marches model (Ben Robbins, 2007): players organize their own sessions and explore a persistent shared world from a safe home base.</p>
+      </div>
+    </div>
+
+    <h2 class="lineage-header lh-cross" id="inflections">Key Inflection Points</h2>
+    <p style="margin-bottom:16px;font-size:13px;color:var(--text3)">The moments that most shaped the post-2005 TTRPG landscape:</p>
+    <ul style="margin-left:0;list-style:none;padding:0">
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>OGL publication (2000)</strong> — legal infrastructure for retroclones, Pathfinder, and the entire open gaming ecosystem. Peter Adkison's decision.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>D&amp;D 4e (2008)</strong> — drove players toward both the OSR and story games simultaneously. The single biggest catalyst in the map.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Apocalypse World (2010)</strong> — Moves, 2d6+stat, the MC's Agenda; the PbtA family begins here.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>D&amp;D 5e (2014)</strong> — bounded accuracy, advantage/disadvantage, proficiency bonus; the 'big tent' edition.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Critical Role (2015)</strong> — made D&amp;D legible as a spectator experience; drove mass new player acquisition.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Blades in the Dark (2017)</strong> — Position/Effect, flashbacks, clocks, Score/Downtime; the FitD family begins here.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Brindlewood Bay (2020)</strong> — Conspiracy mechanic; mystery solutions collaboratively authored; solved the mystery genre's structural problem.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Wanderhome (2021)</strong> — cozy wave reaches full expression; demonstrated mechanical design can serve rest and quiet pleasure.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>The OGL crisis (2023)</strong> — accelerated PF2e adoption, launched ORC license, permanently decentralized the ecosystem.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Shadowdark RPG (2023)</strong> — OSR-to-5e bridge; $1.3M Kickstarter; 4 gold ENNIEs; real-time torches; most commercially successful OSR-adjacent game of the post-OGL era.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Daggerheart (2024)</strong> — Critical Role's own RPG; the actual play tradition developing its own mechanics; indie design principles reaching mass audiences.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Draw Steel (2024)</strong> — MCDM's non-OGL rebuild of fantasy combat; the most prominent post-OGL mainstream alternative to D&amp;D.</li>
+      <li style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6"><strong>Cairn 2e (2024)</strong> — minimalist free game matures into a boxed set; Bonds and Backgrounds add investment without complexity; model for sustainable free-to-play indie publishing.</li>
+      <li style="padding:8px 14px;font-size:13px;line-height:1.6"><strong>Mythic Bastionland (2024)</strong> — McDowall's chassis extended to full campaign play; Myths/Omens as living-world engine; Sites mechanic propagates as a portable location design tool.</li>
+    </ul>
+
+  </main>
+</div>
+
+<script>
+function filterGuide(q) {
+  q = q.toLowerCase().trim();
+  const cards = document.querySelectorAll('.entry-card');
+  const headers = document.querySelectorAll('h3.section-header');
+  
+  if (!q) {
+    cards.forEach(c => c.classList.remove('hidden'));
+    headers.forEach(h => h.classList.remove('all-hidden'));
+    return;
+  }
+  
+  cards.forEach(c => {
+    const text = c.textContent.toLowerCase();
+    c.classList.toggle('hidden', !text.includes(q));
+  });
+  
+  // Hide section headers where all cards after them are hidden
+  headers.forEach(h => {
+    let next = h.nextElementSibling;
+    let allHidden = true;
+    while (next && !next.classList.contains('section-header') && !next.classList.contains('lineage-header') && next.tagName !== 'H2') {
+      if (next.classList.contains('entry-card') && !next.classList.contains('hidden')) {
+        allHidden = false; break;
+      }
+      next = next.nextElementSibling;
+    }
+    h.classList.toggle('all-hidden', allHidden);
+  });
+}
+</script>
+
+</body>
+</html>

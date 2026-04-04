@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTRPG History — Reference Site</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f5f0;
+    --bg2: #ffffff;
+    --bg3: #eeebe4;
+    --border: rgba(0,0,0,0.10);
+    --text: #1c1b18;
+    --text2: #5a5850;
+    --text3: #9a9890;
+    --osr:   #c04828;
+    --osr-bg: #faecea;
+    --main:  #0f6e56;
+    --main-bg: #e0f4ed;
+    --story: #5348b7;
+    --story-bg: #eeedfe;
+    --cross: #78674a;
+    --cross-bg: #f4f0e8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --radius: 12px;
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16150f; --bg2: #1e1d16; --bg3: #242318;
+      --border: rgba(255,255,255,0.09);
+      --text: #e8e4d8; --text2: #a8a490; --text3: #686450;
+      --osr-bg: #2e1208; --main-bg: #082018; --story-bg: #14103a; --cross-bg: #201c10;
+    }
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 4px;
+    height: 48px;
+  }
+  nav .site-title {
+    font-family: var(--font-display);
+    font-size: 14px; font-weight: 400;
+    color: var(--text); margin-right: 16px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  nav a {
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  nav a:hover { background: var(--bg3); color: var(--text); }
+  nav a.active { background: var(--text); color: var(--bg2); }
+
+  .hero {
+    max-width: 900px; margin: 0 auto;
+    padding: 60px 24px 48px;
+    text-align: center;
+  }
+  .hero-label {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 400; line-height: 1.2;
+    color: var(--text); margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px; line-height: 1.7;
+    color: var(--text2); max-width: 600px; margin: 0 auto 36px;
+  }
+
+  .section-cards {
+    max-width: 900px; margin: 0 auto;
+    padding: 0 24px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.12);
+  }
+  .card-icon { font-size: 28px; }
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 400;
+    color: var(--text); line-height: 1.2;
+  }
+  .card-desc { font-size: 13px; line-height: 1.65; color: var(--text2); }
+  .card-tag {
+    display: inline-block; margin-top: 4px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.03em;
+  }
+
+  .lineage-pills {
+    max-width: 900px; margin: 0 auto 0;
+    padding: 0 24px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+  .pill {
+    padding: 6px 18px; border-radius: 20px;
+    font-size: 12px; font-weight: 500;
+    border: 1px solid;
+    cursor: default;
+  }
+  .pill-osr    { background: var(--osr-bg);   color: var(--osr);   border-color: var(--osr); }
+  .pill-main   { background: var(--main-bg);  color: var(--main);  border-color: var(--main); }
+  .pill-story  { background: var(--story-bg); color: var(--story); border-color: var(--story); }
+  .pill-cross  { background: var(--cross-bg); color: var(--cross); border-color: var(--cross); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px; text-align: center;
+    font-size: 12px; color: var(--text3);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="site-title">TTRPG History</span>
+  <a href="index.html" class="active">Home</a>
+  <a href="browser.html">Browser</a>
+  <a href="lineage.html">Lineage Map</a>
+  <a href="guide.html">Study Guide</a>
+</nav>
+
+<div class="hero">
+  <p class="hero-label">2005 to present · A living reference · v10</p>
+  <h1>TTRPG History<br>Reference Site</h1>
+  <p>A navigable knowledge base covering the history of tabletop RPG design — three lineages, key figures, games, concepts, and movements, drawn from a personal Obsidian vault.</p>
+</div>
+
+<div class="lineage-pills">
+  <span class="pill pill-osr">■ OSR &amp; Neo-Trad</span>
+  <span class="pill pill-main">■ Mainstream / D&amp;D</span>
+  <span class="pill pill-story">■ Story Games &amp; Indie</span>
+  <span class="pill pill-cross">■ Crossover</span>
+</div>
+
+<div class="section-cards">
+
+  <a class="card" href="browser.html">
+    <span class="card-icon">🗂</span>
+    <div class="card-title">Game &amp; People Browser</div>
+    <div class="card-desc">Explore 213 pages from the Obsidian vault — people, games, concepts, movements, publishers, and eras. Each page links to its connections. Filter by lineage or search by name.</div>
+    <span class="card-tag" style="background:var(--bg3); color:var(--text2);">213 pages · linked &amp; browsable</span>
+  </a>
+
+  <a class="card" href="lineage.html">
+    <span class="card-icon">🌿</span>
+    <div class="card-title">Lineage Map</div>
+    <div class="card-desc">A visual chart tracing the three design lineages from OD&amp;D to 2025. Click any node to see details. Filter by lineage, search, or print to PDF.</div>
+    <span class="card-tag" style="background:var(--bg3); color:var(--text2);">Interactive SVG chart</span>
+  </a>
+
+  <a class="card" href="guide.html">
+    <span class="card-icon">📖</span>
+    <div class="card-title">Study Guide</div>
+    <div class="card-desc">The complete Key Figures Study Guide — entries organized by design lineage and era, with bios, key works, and reading notes. Designed for web reading.</div>
+    <span class="card-tag" style="background:var(--bg3); color:var(--text2);">Reference material from study guide</span>
+  </a>
+
+</div>
+
+<footer>TTRPG History Reference · Personal research vault · Offline-capable · Open in any browser</footer>
+
+</body>
+</html>
