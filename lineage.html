@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lineage Map — TTRPG History</title>
+<style>
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 300;
+    background: #fff; border-bottom: 1px solid rgba(0,0,0,.10);
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 4px;
+    height: 44px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .site-nav { background: #1e1d16; border-color: rgba(255,255,255,.09); }
+    .site-nav .nav-title { color: #e8e4d8; }
+    .site-nav a { color: #a8a490; }
+    .site-nav a:hover { background: #242318; color: #e8e4d8; }
+    .site-nav a.active { background: #e8e4d8; color: #1e1d16; }
+  }
+  .site-nav .nav-title { font-family: Georgia, serif; font-size: 14px; color: #1c1b18; margin-right: 12px; white-space: nowrap; }
+  .site-nav a { text-decoration: none; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; color: #5a5850; transition: all .15s; font-family: -apple-system, system-ui, sans-serif; }
+  .site-nav a:hover { background: #eeebe4; color: #1c1b18; }
+  .site-nav a.active { background: #1c1b18; color: #fff; }
+
+  /* ORIGINAL CHART STYLES — adapted so header uses sticky below nav */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f9f8f5;
+    --bg2: #ffffff;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --text: #1a1a18;
+    --text2: #5a5a56;
+    --text3: #8a8a84;
+    --coral-fill: #faecea; --coral-stroke: #c04828; --coral-text: #7a2c12;
+    --teal-fill:  #e0f4ed; --teal-stroke:  #0f6e56; --teal-text:  #084038;
+    --purple-fill:#eeedfe; --purple-stroke:#5348b7; --purple-text: #2e2668;
+    --gray-fill:  #f1efe8; --gray-stroke:  #88877e; --gray-text:  #3a3a36;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18; --bg2: #242422; --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+      --text: #e8e6de; --text2: #a8a69e; --text3: #686660;
+      --coral-fill: #3a1a10; --coral-stroke: #e08060; --coral-text: #f4b89a;
+      --teal-fill:  #082820; --teal-stroke:  #3ab88a; --teal-text:  #7addb8;
+      --purple-fill:#1c1840; --purple-stroke:#9088e0; --purple-text: #c4bef8;
+      --gray-fill:  #282826; --gray-stroke:  #6a6a62; --gray-text:  #c0beb6;
+      --shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 16px 24px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  header h1 { font-size: 16px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  header p.sub { font-size: 12px; color: var(--text3); }
+  .header-controls { display: flex; gap: 10px; align-items: center; margin-left: auto; flex-wrap: wrap; }
+
+  input[type="search"] {
+    padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--border2); background: var(--bg);
+    color: var(--text); font-size: 13px; width: 180px;
+    outline: none;
+  }
+  input[type="search"]:focus { border-color: var(--purple-stroke); }
+
+  .filter-btn {
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border2); background: var(--bg); color: var(--text2);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn.active-osr    { background: var(--coral-fill);  border-color: var(--coral-stroke);  color: var(--coral-text); }
+  .filter-btn.active-main   { background: var(--teal-fill);   border-color: var(--teal-stroke);   color: var(--teal-text); }
+  .filter-btn.active-story  { background: var(--purple-fill); border-color: var(--purple-stroke); color: var(--purple-text); }
+  .filter-btn:hover { border-color: var(--text3); }
+
+  .print-btn {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border2); background: var(--bg2); color: var(--text);
+    cursor: pointer;
+  }
+  .print-btn:hover { background: var(--bg); }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; flex: 1; min-height: 0; }
+
+  /* ── CHART AREA ── */
+  .chart-wrap {
+    flex: 1;
+    overflow: auto;
+    padding: 24px;
+    background: var(--bg);
+  }
+  .chart-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sidebar h2 { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; }
+  .sidebar-empty { color: var(--text3); font-size: 13px; line-height: 1.6; }
+  .detail-title { font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .detail-meta  { font-size: 12px; color: var(--text3); line-height: 1.5; }
+  .detail-badge {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 500; margin-right: 4px; margin-top: 4px;
+  }
+  .badge-osr    { background: var(--coral-fill);  color: var(--coral-text);  border: 1px solid var(--coral-stroke); }
+  .badge-main   { background: var(--teal-fill);   color: var(--teal-text);   border: 1px solid var(--teal-stroke); }
+  .badge-story  { background: var(--purple-fill); color: var(--purple-text); border: 1px solid var(--purple-stroke); }
+  .detail-desc  { font-size: 13px; color: var(--text2); line-height: 1.65; }
+  .detail-tags  { font-size: 12px; color: var(--text3); line-height: 1.8; }
+  .divider      { border: none; border-top: 1px solid var(--border); }
+
+  /* ── SVG NODES ── */
+  .node { cursor: pointer; transition: opacity 0.15s; }
+  .node:hover { opacity: 0.82; }
+  .node.dimmed { opacity: 0.2; }
+  .node.highlighted rect { stroke-width: 2 !important; }
+
+  /* ── ERA BANDS ── */
+  .era-band { fill: var(--border); opacity: 0.4; }
+
+  /* ── LEGEND ── */
+  .legend-area { margin-top: 16px; padding: 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); font-size: 12px; color: var(--text2); line-height: 1.8; }
+  .leg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+  /* ── PRINT ── */
+  @media print {
+    header .header-controls, .sidebar { display: none; }
+    .layout { display: block; }
+    .chart-wrap { padding: 0; overflow: visible; }
+    .chart-inner { max-width: 100%; }
+    body { background: white; }
+    @page { margin: 1cm; size: A3 portrait; }
+  }
+
+
+  /* Override: make header not sticky so both navs don't clash */
+  header {
+    position: sticky;
+    top: 44px;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .site-nav .nav-title { display: none; }
+    .site-nav a { padding: 4px 8px; font-size: 12px; }
+    .sidebar { display: none; }
+    .layout { display: block; }
+    .chart-wrap { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <span class="nav-title">TTRPG History</span>
+  <a href="index.html">Home</a>
+  <a href="browser.html">Browser</a>
+  <a href="lineage.html" class="active">Lineage Map</a>
+  <a href="guide.html">Study Guide</a>
+</nav>
+
+
+
+<header>
+  <div>
+    <h1>TTRPG History — Lineage Map</h1>
+    <p class="sub">From OD&amp;D to 2025 · Three lineages · Your collection marked ⭐</p>
+  </div>
+  <div class="header-controls">
+    <input type="search" id="search" placeholder="Search nodes…" oninput="doSearch(this.value)">
+    <button class="filter-btn" id="btn-osr"   onclick="toggleFilter('osr')"  >OSR &amp; Neo-Trad</button>
+    <button class="filter-btn" id="btn-main"  onclick="toggleFilter('main')" >Mainstream</button>
+    <button class="filter-btn" id="btn-story" onclick="toggleFilter('story')">Story Games</button>
+    <button class="filter-btn" onclick="resetAll()">Reset</button>
+    <button class="print-btn" onclick="window.print()">⎙ Print / PDF</button>
+  </div>
+</header>
+
+<div class="layout">
+<div class="chart-wrap">
+<div class="chart-inner">
+
+<svg id="chart" width="100%" viewBox="0 0 680 2020" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <style>
+    .t  { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; fill: currentColor; }
+    .ts { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 11.5px; font-weight: 400; fill: currentColor; }
+    .c-osr    rect { fill: var(--coral-fill);  stroke: var(--coral-stroke); }
+    .c-osr    text { fill: var(--coral-text); }
+    .c-main   rect { fill: var(--teal-fill);   stroke: var(--teal-stroke); }
+    .c-main   text { fill: var(--teal-text); }
+    .c-story  rect { fill: var(--purple-fill); stroke: var(--purple-stroke); }
+    .c-story  text { fill: var(--purple-text); }
+    .c-cross  rect { fill: var(--gray-fill);   stroke: var(--gray-stroke); }
+    .c-cross  text { fill: var(--gray-text); }
+    .arr { stroke: var(--border2); stroke-width: 1.2; fill: none; }
+    .arr-cross { stroke: var(--border2); stroke-width: 0.8; stroke-dasharray: 4 3; fill: none; }
+    .era-label { font-family: -apple-system, sans-serif; font-size: 10.5px; fill: var(--text3); }
+  </style>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="var(--border2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-cross" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="var(--border2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── COLUMN HEADERS ── -->
+<g class="c-osr node" data-lineage="osr" data-id="hdr-osr" onclick="selectNode(this, {title:'OSR & Neo-Trad',desc:'The Old School Renaissance: recovering, remixing, and extending the design principles of early D&D. From retroclones to minimalist indie games.',lineage:'osr',meta:'2006–present',tags:['#osr','#retroclone','#neo-trad']})">
+  <rect x="14" y="8" width="196" height="32" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="28" text-anchor="middle" dominant-baseline="central">OSR &amp; Neo-Trad</text>
+</g>
+<g class="c-main node" data-lineage="main" data-id="hdr-main" onclick="selectNode(this, {title:'Mainstream / D&D',desc:'WotC editions, Paizo, and the mass-market tradition. Also the actual play boom, licensed adaptations, and post-OGL alternatives.',lineage:'main',meta:'2000–present',tags:['#mainstream','#dnd','#d20']})">
+  <rect x="242" y="8" width="196" height="32" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="28" text-anchor="middle" dominant-baseline="central">Mainstream / D&amp;D</text>
+</g>
+<g class="c-story node" data-lineage="story" data-id="hdr-story" onclick="selectNode(this, {title:'Story Games & Indie',desc:'The Forge, PbtA, FitD, and every indie tradition that followed. Narrative mechanics, collaborative design, political games, and the cozy/solo wave.',lineage:'story',meta:'2001–present',tags:['#storygames','#pbtA','#fitD','#indie']})">
+  <rect x="470" y="8" width="196" height="32" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="28" text-anchor="middle" dominant-baseline="central">Story Games &amp; Indie</text>
+</g>
+
+<!-- ── ERA BANDS ── -->
+<text class="era-label" x="340" y="60" text-anchor="middle">── pre-2005 roots ─────────────────────────────────────────────────────────────────────────</text>
+<text class="era-label" x="340" y="282" text-anchor="middle">── 2005–2010: catalyst years ──────────────────────────────────────────────────────────────</text>
+<text class="era-label" x="340" y="508" text-anchor="middle">── 2011–2016: explosion &amp; divergence ────────────────────────────────────────────────────</text>
+<text class="era-label" x="340" y="818" text-anchor="middle">── 2017–2020: synthesis &amp; maturity ───────────────────────────────────────────────────────</text>
+<text class="era-label" x="340" y="1138" text-anchor="middle">── 2021–present: post-OGL landscape ──────────────────────────────────────────────────────</text>
+
+<!-- ═══════ PRE-2005 ═══════ -->
+<g class="node c-osr" data-lineage="osr" data-id="oddx" onclick="selectNode(this,{title:'OD&D / B/X / AD&D',desc:'The originals. OD&D (1974), Basic/Expert (1981), and Advanced D&D (1977–89) from TSR. The DNA of everything in the OSR column. Core concepts: dungeon turn, reaction rolls, save-or-die, hex crawls, treasure XP, referee as neutral arbiter.',lineage:'osr',meta:'1974–1989 · TSR',tags:['#osr','#roots','#tsr','#gygax']})">
+  <rect x="14" y="72" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="88" text-anchor="middle" dominant-baseline="central">OD&amp;D / B/X / AD&amp;D</text>
+  <text class="ts" x="112" y="106" text-anchor="middle" dominant-baseline="central">1974–89 · TSR · the originals</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="ogl" onclick="selectNode(this,{title:'D&D 3e & the OGL',desc:'D&D 3rd Edition (2000) by Monte Cook, Jonathan Tweet, and Skip Williams, published under the Open Game License — one of the most consequential decisions in TTRPG history. The OGL enabled third-party publishing and directly created the conditions for both the d20 boom and the eventual OSR reaction.',lineage:'main',meta:'2000 · WotC · Adkison, Cook',tags:['#d20','#ogl','#3e','#wotc']})">
+  <rect x="242" y="72" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="88" text-anchor="middle" dominant-baseline="central">D&amp;D 3e &amp; the OGL</text>
+  <text class="ts" x="340" y="106" text-anchor="middle" dominant-baseline="central">2000 · WotC · Adkison, Cook</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="forge" onclick="selectNode(this,{title:'The Forge',desc:'Online forum (~2001–2012) co-founded by Ron Edwards and Clinton R. Nixon. Home of GNS theory (Gamist/Narrativist/Simulationist) and the indie design movement. The Forge\'s core insight: mechanical structure shapes what play is easy and hard; designing deliberately beats designing accidentally. Closed 2012; its intellectual legacy trained a generation of designers.',lineage:'story',meta:'~2001 · Edwards & Nixon',tags:['#forge','#gns','#indie','#storygames']})">
+  <rect x="470" y="72" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="88" text-anchor="middle" dominant-baseline="central">The Forge</text>
+  <text class="ts" x="568" y="106" text-anchor="middle" dominant-baseline="central">~2001 · Edwards &amp; Nixon · GNS</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="wfrp" onclick="selectNode(this,{title:'WFRP / Call of Cthulhu',desc:'Two foundational games from the pre-OSR era still highly relevant. Warhammer Fantasy Roleplay (1986, Games Workshop) established the grimdark satirical British RPG tradition and the career-based character system. Call of Cthulhu (1981, Chaosium) established the horror investigation genre and the Sanity mechanic. Both are in your collection.',lineage:'main',meta:'1981–1986 · key ancestors',tags:['#wfrp','#coc','#horror','#british']})">
+  <rect x="242" y="128" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="144" text-anchor="middle" dominant-baseline="central">WFRP / Call of Cthulhu ⭐</text>
+  <text class="ts" x="340" y="162" text-anchor="middle" dominant-baseline="central">1981–86 · key genre ancestors</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="sorcer" onclick="selectNode(this,{title:'Sorcerer / Burning Wheel',desc:'Early Forge games establishing indie design as a discipline. Sorcerer (Ron Edwards, 2001) introduced kickers and bangs. Burning Wheel (Luke Crane, 2002) built mechanics around Beliefs, Instincts, and Traits. Both proved that mechanical weight could sit on what characters believe and want, not just what they can do.',lineage:'story',meta:'2001–02 · Edwards, Crane',tags:['#sorcerer','#burningwheel','#forge','#beliefs']})">
+  <rect x="470" y="128" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="144" text-anchor="middle" dominant-baseline="central">Sorcerer / Burning Wheel</text>
+  <text class="ts" x="568" y="162" text-anchor="middle" dominant-baseline="central">2001–02 · Edwards, Crane</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="4e" onclick="selectNode(this,{title:'D&D 4th Edition',desc:'D&D 4e (2008) was the primary catalyst for the OSR. Its departure from earlier design principles — powers replacing spells, highly structured combat, removal of many classic subsystems — drove players back to older editions and created the audience for retroclones. Also notable for 4e\'s genuine tactical depth, which Matt Colville later credited as one of D&D\'s real achievements.',lineage:'main',meta:'2008 · WotC · Heinsoo, Mearls',tags:['#4e','#wotc','#osr-catalyst','#tactical']})">
+  <rect x="242" y="188" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="204" text-anchor="middle" dominant-baseline="central">D&amp;D 4th Edition</text>
+  <text class="ts" x="340" y="222" text-anchor="middle" dominant-baseline="central">2008 · catalyst for OSR</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="deadlands" onclick="selectNode(this,{title:'Deadlands / Castle Falkenstein',desc:'Key pre-OSR era genre games. Deadlands (Shane Lacy Hensley, Pinnacle, 1996) won nine Origins Awards and helped revive the hobby during the mid-90s slump — alternate history Weird West with playing cards. Castle Falkenstein (Mike Pondsmith, R. Talsorian, 1994) established steampunk RPG. Both in your collection.',lineage:'main',meta:'1994–1996 · Pinnacle, R. Talsorian',tags:['#deadlands','#castlefalkenstein','#weirdwest','#pondsmith']})">
+  <rect x="14" y="188" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="204" text-anchor="middle" dominant-baseline="central">Deadlands / Castle F. ⭐</text>
+  <text class="ts" x="112" y="222" text-anchor="middle" dominant-baseline="central">1994–96 · genre RPG era</text>
+</g>
+
+<!-- Arrows pre-2005 -->
+<line x1="112" y1="116" x2="112" y2="188" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="116" x2="340" y2="128" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="172" x2="340" y2="188" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="116" x2="568" y2="128" class="arr" marker-end="url(#arr)"/>
+
+<!-- ═══════ 2005–2010 ═══════ -->
+<g class="node c-osr" data-lineage="osr" data-id="clones" onclick="selectNode(this,{title:'OSRIC / Labyrinth Lord / S&W',desc:'The first-wave retroclones — AD&D 1e, B/X D&D, and OD&D reformatted under the OGL for legal publication. OSRIC (Finch & Marshall, 2006) — AD&D 1e. Labyrinth Lord (Proctor, 2007) — B/X. Swords & Wizardry (Finch, 2008) — OD&D. Also: Matt Finch\'s A Quick Primer for Old School Gaming (2008, updated 2024) — foundational essay on OSR play philosophy.',lineage:'osr',meta:'2006–08 · Finch, Marshall, Proctor, Gonnerman',tags:['#osric','#labyrinthLord','#sw','#retroclone']})">
+  <rect x="14" y="298" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="315" text-anchor="middle" dominant-baseline="central">OSRIC / Lab.Lord / S&amp;W ⭐</text>
+  <text class="ts" x="112" y="333" text-anchor="middle" dominant-baseline="central">2006–08 · Finch, Marshall</text>
+  <text class="ts" x="112" y="346" text-anchor="middle" dominant-baseline="central">Proctor, Gonnerman</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="pf1" onclick="selectNode(this,{title:'Pathfinder 1e',desc:'Paizo\'s continuation of D&D 3.5 after WotC dropped support — released 2009, briefly outsold D&D itself. Published by Erik Mona and designed by Jason Bulmahn. The d20 tradition\'s most thorough development. The 4e refugee game. In your priority acquisitions: Pathfinder 2e, which uses a completely different three-action economy.',lineage:'main',meta:'2009 · Paizo · outsold D&D',tags:['#pathfinder','#paizo','#d20','#3e']})">
+  <rect x="242" y="298" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="314" text-anchor="middle" dominant-baseline="central">Pathfinder 1e</text>
+  <text class="ts" x="340" y="332" text-anchor="middle" dominant-baseline="central">2009 · Paizo · outsold D&amp;D</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="dogs" onclick="selectNode(this,{title:'Dogs in the Vineyard / Lady Blackbird',desc:'Pre-PbtA touchstones. Dogs in the Vineyard (Vincent Baker, 2004) — moral authority, escalating stakes, the first game to fully work out what Moves would later formalize. Lady Blackbird (John Harper, 2009) — 16 pages, free, a complete adventure game that demonstrates extreme economy of design. In your collection.',lineage:'story',meta:'2004–09 · V. Baker, Harper',tags:['#dogs','#ladyblackbird','#harper','#baker']})">
+  <rect x="470" y="298" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="315" text-anchor="middle" dominant-baseline="central">Dogs in Vineyard / Lady B. ⭐</text>
+  <text class="ts" x="568" y="333" text-anchor="middle" dominant-baseline="central">2004–09 · V. Baker</text>
+  <text class="ts" x="568" y="346" text-anchor="middle" dominant-baseline="central">Harper · pre-PbtA touchstones</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="aw" onclick="selectNode(this,{title:'Apocalypse World',desc:'Vincent & Meguey Baker, 2010. The single most influential game in the story games lineage. Introduced Moves, the MC Agenda and Principles framework, the 2d6 bell curve with three outcomes, and the design philosophy of making the rules explicitly serve the fiction you want to produce. Read the MC chapters as design theory. In your collection.',lineage:'story',meta:'2010 · V. & M. Baker · PbtA origin',tags:['#aw','#pbtA','#baker','#moves','#mcagenda']})">
+  <rect x="470" y="370" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="386" text-anchor="middle" dominant-baseline="central">Apocalypse World ⭐</text>
+  <text class="ts" x="568" y="404" text-anchor="middle" dominant-baseline="central">2010 · V. &amp; M. Baker · PbtA origin</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="lotfp" onclick="selectNode(this,{title:'Lamentations of the Flame Princess',desc:'James Raggi, 2010. LotFP defined the weird OSR aesthetic — dark, strange, explicitly not heroic fantasy. Raggi commissioned some of the most provocative adventure writing in the hobby (Zak S., James Raggi, Kenneth Hite\'s Qelong). Its production design — physical books as objects — established that OSR games could have aesthetic ambition beyond mimicking TSR.',lineage:'osr',meta:'2010 · Raggi · weird OSR',tags:['#lotfp','#raggi','#weird','#osr']})">
+  <rect x="14" y="370" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="386" text-anchor="middle" dominant-baseline="central">Lamentations of FP</text>
+  <text class="ts" x="112" y="404" text-anchor="middle" dominant-baseline="central">2010 · Raggi · weird OSR</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="playunsafe" onclick="selectNode(this,{title:'Play Unsafe',desc:'Graham Walmsley, 2007. A 74-page book applying theatre improv theory (Keith Johnstone) to TTRPG practice. Argues against front-loaded preparation in favour of holding ideas lightly, being obvious, and trusting the collaborative moment. Predates most PbtA "play to find out" articulations but arrives at overlapping insights from a different direction. Worth reading alongside AW\'s MC chapters.',lineage:'story',meta:'2007 · Walmsley · improv theory',tags:['#playunsafe','#walmsley','#improv','#gm-craft']})">
+  <rect x="470" y="430" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="446" text-anchor="middle" dominant-baseline="central">Play Unsafe</text>
+  <text class="ts" x="568" y="464" text-anchor="middle" dominant-baseline="central">2007 · Walmsley · improv theory</text>
+</g>
+
+<!-- Arrows 2005-2010 -->
+<line x1="112" y1="232" x2="112" y2="298" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="232" x2="340" y2="298" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="172" x2="568" y2="298" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="354" x2="568" y2="370" class="arr" marker-end="url(#arr)"/>
+
+<!-- ═══════ 2011–2016 ═══════ -->
+<g class="node c-osr" data-lineage="osr" data-id="dcc" onclick="selectNode(this,{title:'Dungeon Crawl Classics',desc:'Joseph Goodman, 2012. The maximalist pole of OSR design — dice chain (d3, d5, d7, d14, d16, d24, d30), the Funnel (0-level character creation where most die), Mighty Deeds, spell-check corruption. Where McDowall removes elements to reveal what matters, Goodman accumulates elements to produce a particular feel. Hugely influential on the zine era.',lineage:'osr',meta:'2012 · Goodman · maximalist OSR',tags:['#dcc','#goodman','#funnel','#dicechian']})">
+  <rect x="14" y="524" width="92" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="60" y="541" text-anchor="middle" dominant-baseline="central">DCC</text>
+  <text class="ts" x="60" y="559" text-anchor="middle" dominant-baseline="central">2012</text>
+  <text class="ts" x="60" y="572" text-anchor="middle" dominant-baseline="central">Goodman</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="ito" onclick="selectNode(this,{title:'Into the Odd',desc:'Chris McDowall, 2014 (remastered 2022). The minimalist pole of OSR design. No to-hit roll — roll straight to damage. No skill lists. Arcana instead of spell lists. Three stats (STR/DEX/WIL). HP as a buffer before real ability damage begins. McDowall\'s method: test whether each element improves play when removed. Source game for Cairn, Mausritter, and Mythic Bastionland.',lineage:'osr',meta:'2014 · McDowall · minimalist OSR',tags:['#intotheOdd','#mcdowall','#minimalist','#ito-family']})">
+  <rect x="118" y="524" width="92" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="164" y="541" text-anchor="middle" dominant-baseline="central">Into the Odd</text>
+  <text class="ts" x="164" y="559" text-anchor="middle" dominant-baseline="central">2014</text>
+  <text class="ts" x="164" y="572" text-anchor="middle" dominant-baseline="central">McDowall</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="5e" onclick="selectNode(this,{title:'D&D 5th Edition',desc:'WotC, 2014. Mike Mearls and Jeremy Crawford\'s return to mainstream synthesis. Bounded accuracy, advantage/disadvantage, streamlined action economy. Became the biggest RPG in history. The game against which everything in the next decade is positioned: Pathfinder 2e refines it, OSR games reject it, Shadowdark bridges it, Draw Steel replaces its combat, Daggerheart reimagines it for actual play. In your collection (AD&D 3e/5e).',lineage:'main',meta:'2014 · WotC · Mearls, Crawford',tags:['#5e','#dnd','#mainstream','#boundedAccuracy']})">
+  <rect x="242" y="524" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="540" text-anchor="middle" dominant-baseline="central">D&amp;D 5th Edition</text>
+  <text class="ts" x="340" y="558" text-anchor="middle" dominant-baseline="central">2014 · WotC · mass market revival</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="dw" onclick="selectNode(this,{title:'Dungeon World',desc:'Sage LaTorra & Adam Koebel, 2012. PbtA applied to D&D fantasy. The game that introduced most mainstream players to PbtA design language. Fronts as campaign structure, Moves for dungeon-exploration activities, Defy Danger as the universal risky-action move. Widely played; the most accessible entry point to the PbtA tradition for D&D players. In your priority acquisitions.',lineage:'story',meta:'2012 · LaTorra & Koebel · PbtA/D&D',tags:['#dungeonWorld','#pbtA','#laToRra','#koebel']})">
+  <rect x="470" y="524" width="92" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="516" y="541" text-anchor="middle" dominant-baseline="central">Dungeon World</text>
+  <text class="ts" x="516" y="559" text-anchor="middle" dominant-baseline="central">2012</text>
+  <text class="ts" x="516" y="572" text-anchor="middle" dominant-baseline="central">LaTorra/Koebel</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="mh" onclick="selectNode(this,{title:'Monsterhearts',desc:'Avery Alder, 2012. PbtA applied to teen monster fiction (Buffy, Twilight). The Strings economy — social debt as mechanical resource. Skins as playbooks that encode specific archetypes. One of the most significant PbtA diaspora games: demonstrates that the framework supports intimate, emotional, queer play as well as any genre. In your priority acquisitions (Tier 1).',lineage:'story',meta:'2012 · Alder · Strings economy',tags:['#monsterhearts','#alder','#strings','#pbtA','#queer']})">
+  <rect x="574" y="524" width="92" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="620" y="541" text-anchor="middle" dominant-baseline="central">Monsterhearts</text>
+  <text class="ts" x="620" y="559" text-anchor="middle" dominant-baseline="central">2012</text>
+  <text class="ts" x="620" y="572" text-anchor="middle" dominant-baseline="central">Alder</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="gumshoe" onclick="selectNode(this,{title:'GUMSHOE / Night\'s Black Agents',desc:'Robin D. Laws\'s investigative system (Pelgrane Press). Core insight: if you have the investigative skill and look in the right place, you automatically find the clue — dice are spent for quality, not discovery. Trail of Cthulhu (2008), Night\'s Black Agents (2012). Graham Walmsley developed Cthulhu Dark partly in conversation with this tradition. Night\'s Black Agents is in your collection.',lineage:'story',meta:"2007–13 · Laws · Pelgrane Press",tags:['#gumshoe','#nba','#laws','#investigation']})">
+  <rect x="470" y="596" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="612" text-anchor="middle" dominant-baseline="central">GUMSHOE / NBA ⭐</text>
+  <text class="ts" x="568" y="630" text-anchor="middle" dominant-baseline="central">2007–13 · Laws · Pelgrane</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="cthdark" onclick="selectNode(this,{title:'Cthulhu Dark',desc:'Graham Walmsley, 2010/2017. Rules-light Lovecraftian horror starting as a 4-page pamphlet. The Insight track (rolls of 6 escalate dread until 6 = madness), no combat vs. Mythos creatures, social class inversion (play thieves and slum dwellers, not wealthy antiquarians). The 2017 expansion is primarily a horror GMing manual: Creeping Horrors, mystery construction, writing from themes you find frightening. Worth reading even if you never run it.',lineage:'story',meta:'2010/2017 · Walmsley · horror design',tags:['#cthuluDark','#walmsley','#horror','#insight']})">
+  <rect x="470" y="656" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="672" text-anchor="middle" dominant-baseline="central">Cthulhu Dark</text>
+  <text class="ts" x="568" y="690" text-anchor="middle" dominant-baseline="central">2010/2017 · Walmsley</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="hyperb" onclick="selectNode(this,{title:'Hyperborea ⭐',desc:'Jeff Talanian, 2012 (3rd ed. 2022). Sword & Sorcery OSR drawing on Clark Ashton Smith, Robert E. Howard, and H.P. Lovecraft. A game with a tight literary-aesthetic identity — every mechanic serves the specific feel of pulp fantasy. North Wind Adventures. In your collection and played.',lineage:'osr',meta:'2012 · Talanian · North Wind Adventures',tags:['#hyperborea','#talanian','#swordAndSorcery','#osr','#played']})">
+  <rect x="14" y="596" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="612" text-anchor="middle" dominant-baseline="central">Hyperborea ⭐ (played)</text>
+  <text class="ts" x="112" y="630" text-anchor="middle" dominant-baseline="central">2012 · Talanian · sword &amp; sorcery</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="blades" onclick="selectNode(this,{title:'Blades in the Dark ⭐',desc:'John Harper, 2017. The Forged in the Dark origin. Flashback mechanic, clocks, position/effect replacing hit-die combat math, crew sheet as a collective playbook, the score as the base unit of adventure. Removes setup entirely: you start in the middle of the heist, use flashbacks to establish what you prepared. You are a Kickstarter backer of the Blades 68 expansion. In your collection.',lineage:'story',meta:'2017 · Harper · FitD origin',tags:['#blades','#harper','#fitD','#flashback','#clocks','#owned']})">
+  <rect x="470" y="716" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="732" text-anchor="middle" dominant-baseline="central">Blades in the Dark ⭐</text>
+  <text class="ts" x="568" y="750" text-anchor="middle" dominant-baseline="central">2017 · Harper · FitD origin</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="masks" onclick="selectNode(this,{title:'Masks: A New Generation ⭐',desc:'Brendan Conway, 2016. PbtA superhero game. The Influence/Labels system — NPCs and teammates can shift your character\'s self-image, and reclaiming who you are against others\' definitions is a core activity. Mechanically elegant expression of the teen-superhero genre\'s actual themes. In your collection.',lineage:'story',meta:'2016 · Conway · PbtA superhero',tags:['#masks','#conway','#pbtA','#influence','#labels']})">
+  <rect x="470" y="776" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="792" text-anchor="middle" dominant-baseline="central">Masks: A New Gen. ⭐</text>
+  <text class="ts" x="568" y="810" text-anchor="middle" dominant-baseline="central">2016 · Conway · Influence/Labels</text>
+</g>
+
+<!-- Arrows 2011-2016 -->
+<line x1="112" y1="414" x2="112" y2="524" class="arr" marker-end="url(#arr)"/>
+<line x1="164" y1="414" x2="164" y2="524" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="342" x2="340" y2="524" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="474" x2="568" y2="524" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="640" x2="568" y2="656" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="700" x2="568" y2="716" class="arr" marker-end="url(#arr)"/>
+
+<!-- ═══════ 2017–2020 ═══════ -->
+<g class="node c-osr" data-lineage="osr" data-id="2ndwave" onclick="selectNode(this,{title:'Troika! / Mothership / Mörk Borg',desc:'The second OSR wave — post-OSR games that kept old-school principles but took wild aesthetic detours. Troika! (Sell, 2015/2019): implied setting via wildly diverse backgrounds, bag initiative, no genre conventions. Mothership (McCoy, 2017): sci-fi horror; stress/panic; d100 system. Mörk Borg (Tøgersen & Nohr, 2019): death metal art-RPG; free license generating hundreds of products. All use OSR principles without B/X compatibility.',lineage:'osr',meta:'2015–19 · Sell, McCoy, Tøgersen & Nohr',tags:['#troika','#mothership','#morkborg','#postOSR','#zineera']})">
+  <rect x="14" y="838" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="855" text-anchor="middle" dominant-baseline="central">Troika! / Mothership / Mörk Borg</text>
+  <text class="ts" x="112" y="873" text-anchor="middle" dominant-baseline="central">2015–19 · Sell, McCoy</text>
+  <text class="ts" x="112" y="886" text-anchor="middle" dominant-baseline="central">Tøgersen &amp; Nohr</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="ose" onclick="selectNode(this,{title:'Old-School Essentials',desc:'Gavin Norman, Necrotic Gnome, 2019. A meticulous re-presentation of B/X D&D that became the dominant neo-trad platform. OSE\'s key achievement: the rules are identical to B/X but reorganised so they\'re actually usable at the table. Now the system Dolmenwood runs on. In your collection.',lineage:'osr',meta:'2019 · Norman · Necrotic Gnome',tags:['#ose','#norman','#bx','#neotrad','#neocrticGnome']})">
+  <rect x="14" y="910" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="926" text-anchor="middle" dominant-baseline="central">Old-School Essentials ⭐</text>
+  <text class="ts" x="112" y="944" text-anchor="middle" dominant-baseline="central">2019 · Norman · neo-trad platform</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="pf2" onclick="selectNode(this,{title:'Pathfinder 2e',desc:'Paizo, 2019. The three-action economy — each turn gives three actions; every action costs 1, 2, or 3 actions; the decision space is richer than 5e\'s. Also: four-outcome resolution (crit fail/fail/success/crit success), resonance system replaced by item bonuses. The most mechanically sophisticated mainstream alternative to 5e currently available. In your priority acquisitions.',lineage:'main',meta:'2019 · Paizo · three-action economy',tags:['#pf2','#paizo','#threeAction','#mainstream']})">
+  <rect x="242" y="838" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="854" text-anchor="middle" dominant-baseline="central">Pathfinder 2e</text>
+  <text class="ts" x="340" y="872" text-anchor="middle" dominant-baseline="central">2019 · Paizo · three-action economy</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="actualplay" onclick="selectNode(this,{title:'Actual Play Boom',desc:'Critical Role launched on Geek & Sundry in 2015; the phenomenon grew throughout this period. Brought millions of new players to TTRPGs. Created the actual play aesthetic — performative, narrative-forward, character-focused. Darrington Press (Critical Role\'s publisher) would go on to publish Daggerheart.',lineage:'main',meta:'2015–20 · Critical Role, etc.',tags:['#actualplay','#criticalrole','#mainstream']})">
+  <rect x="242" y="898" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="914" text-anchor="middle" dominant-baseline="central">Actual Play Boom</text>
+  <text class="ts" x="340" y="932" text-anchor="middle" dominant-baseline="central">2015–20 · Critical Role</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="cairn" onclick="selectNode(this,{title:'Cairn / Electric Bastionland ⭐',desc:'Yochai Gal (Cairn, 2020) and Chris McDowall (Electric Bastionland, 2020). Both distil the Into the Odd chassis. Cairn: free, CC-licensed, forest fantasy, gateway to minimalist OSR — downloaded hundreds of thousands of times. Electric Bastionland: failed careers as character generation, debt as campaign engine, the city of Bastion changes so fast it can\'t be mapped. Both in your collection.',lineage:'osr',meta:'2020 · Gal, McDowall',tags:['#cairn','#electricBastionland','#gal','#mcdowall','#itofamily']})">
+  <rect x="14" y="970" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="986" text-anchor="middle" dominant-baseline="central">Cairn ⭐ / Electric Bastionland</text>
+  <text class="ts" x="112" y="1004" text-anchor="middle" dominant-baseline="central">2020 · Gal, McDowall</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="spire" onclick="selectNode(this,{title:'Spire / Heart / Band of Blades ⭐',desc:'The FitD diaspora. Spire (Howitt & Taylor, 2018): dark elf revolution, domain stress tracks, political horror — in your collection and played. Heart (Howitt & Taylor, 2021): dungeon-delve into a living underworld using Stress/Fallout. Band of Blades (Acimovic & LeBoeuf-Little, 2019): military fantasy FitD with two-level play (squad and officer). All demonstrate FitD\'s adaptability to radically different tones.',lineage:'story',meta:'2018–21 · Howitt, Taylor, Acimovic',tags:['#spire','#heart','#bandOfBlades','#fitD','#howitt','#taylor']})">
+  <rect x="470" y="838" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="855" text-anchor="middle" dominant-baseline="central">Spire ⭐ / Heart / Band of Blades</text>
+  <text class="ts" x="568" y="873" text-anchor="middle" dominant-baseline="central">2018–21 · Howitt, Taylor</text>
+  <text class="ts" x="568" y="886" text-anchor="middle" dominant-baseline="central">Acimovic · FitD diaspora</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="cozywave" onclick="selectNode(this,{title:'Ironsworn / TYOV / Wanderhome ⭐',desc:'The cozy and solo wave. Ironsworn (Tomkin, 2019): free, definitive solo TTRPG, vow/progress system, oracle tables — in your collection. Thousand Year Old Vampire (Hutchings, 2019): solo journaling, the forgetting mechanic. Wanderhome (Dragon, 2021): no combat, pastoral, token economy — in your collection. Together these demonstrate that TTRPG design can serve rest and beauty as precisely as conflict.',lineage:'story',meta:'2019–21 · Tomkin, Hutchings, Dragon',tags:['#ironsworn','#tyov','#wanderhome','#solo','#cozy']})">
+  <rect x="470" y="910" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="927" text-anchor="middle" dominant-baseline="central">Ironsworn ⭐ / TYOV / Wanderhome ⭐</text>
+  <text class="ts" x="568" y="945" text-anchor="middle" dominant-baseline="central">2019–21 · Tomkin, Hutchings</text>
+  <text class="ts" x="568" y="958" text-anchor="middle" dominant-baseline="central">Dragon · cozy/solo wave</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="bb" onclick="selectNode(this,{title:'Brindlewood Bay ⭐ / Monster of the Week ⭐',desc:'Two significant PbtA games in your collection. Brindlewood Bay (Cordova, 2020): played as GM. Elderly amateur sleuths; the Conspiracy mechanic solves the mystery genre problem by making the solution emergent rather than pre-determined. Monster of the Week (Sands, 2012): episodic monster hunting, Buffy/Supernatural/X-Files. Luck as finite resource producing natural character arcs. Played.',lineage:'story',meta:'2012–20 · Sands, Cordova',tags:['#brindlewoodBay','#motw','#cordova','#sands','#mystery']})">
+  <rect x="470" y="982" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="998" text-anchor="middle" dominant-baseline="central">Brindlewood Bay ⭐ / MotW ⭐</text>
+  <text class="ts" x="568" y="1016" text-anchor="middle" dominant-baseline="central">2012–20 · Sands, Cordova</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="rhap" onclick="selectNode(this,{title:'Rhapsody of Blood ⭐',desc:'Minerva McJanda, UFO Press, 2019. Gothic PbtA dungeon-delve. Bloodline heroes with power over the Castle — a living supernatural structure that corrupts the land. Multiple runs, accumulated corruption, the Castle as a meaningful antagonist. The castle combat engine that McJanda later adapted into Voidheart Symphony. In your collection.',lineage:'story',meta:'2019 · McJanda · UFO Press',tags:['#rhapsody','#mcjanda','#pbtA','#gothic']})">
+  <rect x="470" y="1042" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="1058" text-anchor="middle" dominant-baseline="central">Rhapsody of Blood ⭐</text>
+  <text class="ts" x="568" y="1076" text-anchor="middle" dominant-baseline="central">2019 · McJanda · gothic PbtA</text>
+</g>
+
+<!-- Arrows 2017-2020 -->
+<line x1="112" y1="894" x2="112" y2="910" class="arr" marker-end="url(#arr)"/>
+<line x1="112" y1="954" x2="112" y2="970" class="arr" marker-end="url(#arr)"/>
+<line x1="164" y1="580" x2="164" y2="838" class="arr" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<line x1="568" y1="820" x2="568" y2="838" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="966" x2="568" y2="982" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="1026" x2="568" y2="1042" class="arr" marker-end="url(#arr)"/>
+
+<!-- ═══════ 2021–PRESENT ═══════ -->
+<g class="node c-main" data-lineage="main" data-id="oglcrisis" onclick="selectNode(this,{title:'OGL Crisis 2023',desc:'January 2023: WotC attempted to revise the Open Game License to extract royalties and restrict third-party publishing. The community reacted with extraordinary speed and unity. WotC backed down within weeks. Paizo and others created the ORC License as an alternative. The crisis accelerated adoption of non-OGL systems and directly boosted Shadowdark, Draw Steel, and other post-OGL games.',lineage:'main',meta:'2023 · WotC attempt; community pushback',tags:['#ogl','#orc','#crisis','#wotc','#paizo']})">
+  <rect x="242" y="1158" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="1174" text-anchor="middle" dominant-baseline="central">OGL Crisis 2023</text>
+  <text class="ts" x="340" y="1192" text-anchor="middle" dominant-baseline="central">WotC attempt; community pushback</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="dolmen" onclick="selectNode(this,{title:'Dolmenwood ⭐ (played)',desc:'Gavin Norman, Necrotic Gnome, 2024. Folk horror campaign setting running on OSE. A fully realized world inspired by fairy tales and eerie British folklore. Seven factions: the Drune, the Cold Prince, the human nobility (Duchy of Brackenwold), the breggle nobility, the Pluritine Church, the witches, and Atanuwë. Mosslings are a playable kindred, not a faction. In your collection; played as a player.',lineage:'osr',meta:'2024 · Norman · Necrotic Gnome',tags:['#dolmenwood','#norman','#folkhorror','#neotrad','#played']})">
+  <rect x="14" y="1158" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="1175" text-anchor="middle" dominant-baseline="central">Dolmenwood ⭐ (played)</text>
+  <text class="ts" x="112" y="1193" text-anchor="middle" dominant-baseline="central">2024 · Norman · folk horror</text>
+  <text class="ts" x="112" y="1206" text-anchor="middle" dominant-baseline="central">Necrotic Gnome · on OSE</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="shadowdark" onclick="selectNode(this,{title:'Shadowdark RPG',desc:'Kelsey Dionne, The Arcane Library, 2023. The most commercially successful OSR-adjacent game of the post-OGL era. $1.3M Kickstarter at the height of the OGL crisis. Four gold ENNIEs 2024 (Product of Year, Best Game, Best Rules, Best Layout). OSR-to-5e bridge: d20 roll-over, familiar classes, but real resource management, lethality, and the game\'s signature mechanic — real-time torches (60 actual minutes on a phone timer). Open third-party license generated an immediate ecosystem.',lineage:'osr',meta:'2023 · Dionne · $1.3M KS · 4 gold ENNIEs',tags:['#shadowdark','#dionne','#osr','#crossover','#postOGL']})">
+  <rect x="14" y="1230" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="1247" text-anchor="middle" dominant-baseline="central">Shadowdark RPG</text>
+  <text class="ts" x="112" y="1265" text-anchor="middle" dominant-baseline="central">2023 · Dionne · $1.3M KS</text>
+  <text class="ts" x="112" y="1278" text-anchor="middle" dominant-baseline="central">4 gold ENNIEs · OSR-5e bridge</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="drawsteel" onclick="selectNode(this,{title:'Draw Steel',desc:'MCDM Productions (Matt Colville), 2024. $4.7M Kickstarter. The most prominent post-OGL attempt to rebuild mainstream fantasy combat from scratch. Colville\'s diagnosis: D&D\'s combat isn\'t overemphasized, it\'s just not good enough. Draw Steel uses a varied action economy, tactically distinctive monsters, and hero classes designed around each character\'s unique contribution to an encounter. Visible 4e DNA.',lineage:'main',meta:'2024 · MCDM · Colville · $4.7M KS',tags:['#drawSteel','#mcdm','#colville','#postOGL','#tactical']})">
+  <rect x="242" y="1218" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="1234" text-anchor="middle" dominant-baseline="central">Draw Steel</text>
+  <text class="ts" x="340" y="1252" text-anchor="middle" dominant-baseline="central">2024 · MCDM · Colville · $4.7M</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="mythic" onclick="selectNode(this,{title:'Mythic Bastionland',desc:'Chris McDowall, 2024. The third Bastionland game — set in the imagined Arthurian past. Proves the minimalist chassis supports full campaign play. Key additions: Gambits (tactical combat options), Feats (Smite/Focus/Deny), Three Virtues replacing HP (each restored differently), Myths/Omens as the living-world campaign engine, Glory as social advancement, and the Sites mechanic — a portable location design tool (3 interest points, 2–4 challenges, 1 goal, 1 secret) now used across many systems. Grant Howitt: "a victory lap."',lineage:'osr',meta:'2024 · McDowall · Arthurian · Sites mechanic',tags:['#mythicBastionland','#mcdowall','#arthurian','#sites','#myths']})">
+  <rect x="14" y="1302" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="1319" text-anchor="middle" dominant-baseline="central">Mythic Bastionland</text>
+  <text class="ts" x="112" y="1337" text-anchor="middle" dominant-baseline="central">2024 · McDowall · Arthurian</text>
+  <text class="ts" x="112" y="1350" text-anchor="middle" dominant-baseline="central">Myths/Omens · Sites mechanic</text>
+</g>
+<g class="node c-osr" data-lineage="osr" data-id="cairn2" onclick="selectNode(this,{title:'Cairn 2e Boxed Set',desc:'Yochai Gal, 2024. The second edition of Cairn expanded from a minimalist pamphlet to a fully realized boxed set. Key additions: Bonds (items/events of personal significance), Omens (story hooks), Backgrounds (implied setting through character history), and a new Warden\'s Guide. Design driven by a specific observation: Gal\'s players weren\'t primarily motivated by treasure-hunting. Free PDF; paid boxed set.',lineage:'osr',meta:"2024 · Gal · Bonds, Warden's Guide",tags:['#cairn2e','#gal','#bonds','#boxedset','#free']})">
+  <rect x="14" y="1374" width="196" height="44" rx="6" stroke-width="0.6"/>
+  <text class="t" x="112" y="1390" text-anchor="middle" dominant-baseline="central">Cairn 2e Boxed Set</text>
+  <text class="ts" x="112" y="1408" text-anchor="middle" dominant-baseline="central">2024 · Gal · Bonds, Warden's Guide</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="crossover" onclick="selectNode(this,{title:'Crossover Wave',desc:'Games occupying the space between mass-market D&D and the indie scene. The One Ring 2e (Nepitello/Free League, 2022): best licensed adaptation ever made; journey mechanics. Vaesen (Hintze/Free League, 2021): Nordic folklore; grievance-based resolution. Dragonbane (Free League, 2023): Swedish OSR-adjacent; roll-under skill system. Daggerheart (Starke & Hall/Darrington, 2024): Hope/Fear dice; indie principles for mainstream. Cosmere RPG (Brotherwise, 2025): $15M KS.',lineage:'main',meta:'2021–25 · Free League, Darrington, Brotherwise',tags:['#oneRing','#vaesen','#dragonbane','#daggerheart','#cosmere','#crossover']})">
+  <rect x="242" y="1278" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="1295" text-anchor="middle" dominant-baseline="central">Crossover Wave</text>
+  <text class="ts" x="340" y="1313" text-anchor="middle" dominant-baseline="central">One Ring · Vaesen ⭐ · Dragonbane</text>
+  <text class="ts" x="340" y="1326" text-anchor="middle" dominant-baseline="central">Daggerheart · Cosmere ($15M)</text>
+</g>
+<g class="node c-main" data-lineage="main" data-id="crownskull" onclick="selectNode(this,{title:'Crown and Skull',desc:'Brandish Gilhelm/Runehammer, 2023. A complete fantasy RPG with no stats, no HP, and no to-hit rolls. The Attrition system: when you take damage, you cross off a skill or piece of equipment — your gear IS your buffer against death. Tactics dice drive enemy behavior automatically (zero-prep). Five-phase combat. Crown or Skull choice: a permanent late-game binary faction alignment. DIY ethos; Gilhelm explicitly rejects the OSR label.',lineage:'main',meta:'2023 · Gilhelm/Runehammer · Attrition system',tags:['#crownAndSkull','#runehammer','#attrition','#diy','#noHP']})">
+  <rect x="242" y="1350" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="340" y="1367" text-anchor="middle" dominant-baseline="central">Crown and Skull</text>
+  <text class="ts" x="340" y="1385" text-anchor="middle" dominant-baseline="central">2023 · Gilhelm/Runehammer</text>
+  <text class="ts" x="340" y="1398" text-anchor="middle" dominant-baseline="central">Attrition system · DIY ethos</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="void" onclick="selectNode(this,{title:'Voidheart Symphony',desc:'Minerva McJanda, UFO Press, 2021 (Revised with RR&D in development). PbtA game of psychic rebellion in the modern city. Dual-world system: roll-under Stress Gauges in the city (societal pressure as mechanic); standard 2d6+stat in the Castle (nightmare psychological space inside each vassal). Covenants: relationships with NPCs keyed to tarot Major Arcana that give powers in both worlds. Advancement = cultivating community. Sequel to Rhapsody of Blood.',lineage:'story',meta:'2021 · McJanda · UFO Press / RR&D',tags:['#voidheart','#mcjanda','#pbtA','#covenants','#political','#dualworld']})">
+  <rect x="470" y="1158" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="1175" text-anchor="middle" dominant-baseline="central">Voidheart Symphony</text>
+  <text class="ts" x="568" y="1193" text-anchor="middle" dominant-baseline="central">2021 · McJanda · UFO Press/RRD</text>
+  <text class="ts" x="568" y="1206" text-anchor="middle" dominant-baseline="central">Dual-world PbtA · Covenants</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="uhills" onclick="selectNode(this,{title:'Under Hollow Hills ⭐ / Vale ⭐',desc:'Two significant PbtA games in your collection. Under Hollow Hills (Vincent Baker, 2021): faerie circus traveling between worlds — Baker post-AW in a warmer register, the GM role more collaborative and generative. Vale of the Failed and the Fallen (Robert Turk, 2025): PbtA regret & redemption, two-timeline structure, adults returning to a childhood fantasy realm they failed to save. Played Vale.',lineage:'story',meta:'2021–25 · Baker, Turk',tags:['#underHollowHills','#vale','#baker','#turk','#pbtA']})">
+  <rect x="470" y="1230" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="1247" text-anchor="middle" dominant-baseline="central">Under Hollow Hills ⭐ / Vale ⭐</text>
+  <text class="ts" x="568" y="1265" text-anchor="middle" dominant-baseline="central">2021–25 · Baker, Turk</text>
+  <text class="ts" x="568" y="1278" text-anchor="middle" dominant-baseline="central">PbtA diaspora continues</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="ngh" onclick="selectNode(this,{title:'Never Going Home ⭐',desc:'Wet Ink Games (Brandon Aten & Matthew Orr), 2019. Uses the +One System: d6 dice pools with 5–6 as successes, Attributes modify dice before/after rolls, playing cards for magic and psychological deterioration. The card hand represents mental and emotional resources — each discard requires narrating what part of yourself you\'re losing to eldritch corruption. The Unit (not the individual) is the campaign protagonist. ENNIE-nominated Best Art 2020. In your collection.',lineage:'story',meta:'2019 · Wet Ink Games · +One System',tags:['#neverGoingHome','#wetInk','#plusOneSystem','#wwi','#cards']})">
+  <rect x="470" y="1302" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="1319" text-anchor="middle" dominant-baseline="central">Never Going Home ⭐</text>
+  <text class="ts" x="568" y="1337" text-anchor="middle" dominant-baseline="central">2019 · Wet Ink · +One System</text>
+  <text class="ts" x="568" y="1350" text-anchor="middle" dominant-baseline="central">WWI horror · card deterioration</text>
+</g>
+<g class="node c-story" data-lineage="story" data-id="sundcosdark" onclick="selectNode(this,{title:'Sundered Isles / Cosmic Dark',desc:'Two games extending established lineages. Sundered Isles (Shawn Tomkin, 2024): Age of Sail expansion for Ironsworn: Starforged — naval combat procedures, ship/crew management, the oracle system in a third genre context. Cosmic Dark (Graham Walmsley, in development): space body horror using the Cthulhu Dark chassis — no character creation, the Changed mechanic, corporate horror entangled with body horror mechanically.',lineage:'story',meta:'2024+ · Tomkin, Walmsley',tags:['#sunderedIsles','#cosmicDark','#tomkin','#walmsley','#solo','#horror']})">
+  <rect x="470" y="1374" width="196" height="56" rx="6" stroke-width="0.6"/>
+  <text class="t" x="568" y="1391" text-anchor="middle" dominant-baseline="central">Sundered Isles / Cosmic Dark</text>
+  <text class="ts" x="568" y="1409" text-anchor="middle" dominant-baseline="central">2024+ · Tomkin, Walmsley</text>
+  <text class="ts" x="568" y="1422" text-anchor="middle" dominant-baseline="central">Solo &amp; horror lineages extend</text>
+</g>
+
+<!-- Arrows 2021-present -->
+<line x1="112" y1="1014" x2="112" y2="1158" class="arr" marker-end="url(#arr)"/>
+<line x1="112" y1="1214" x2="112" y2="1230" class="arr" marker-end="url(#arr)"/>
+<line x1="112" y1="1286" x2="112" y2="1302" class="arr" marker-end="url(#arr)"/>
+<line x1="112" y1="1358" x2="112" y2="1374" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="942" x2="340" y2="1158" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="1202" x2="340" y2="1218" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="1262" x2="340" y2="1278" class="arr" marker-end="url(#arr)"/>
+<line x1="340" y1="1334" x2="340" y2="1350" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="1086" x2="568" y2="1158" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="1214" x2="568" y2="1230" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="1286" x2="568" y2="1302" class="arr" marker-end="url(#arr)"/>
+<line x1="568" y1="1358" x2="568" y2="1374" class="arr" marker-end="url(#arr)"/>
+
+<!-- ── CROSS-LINEAGE (dashed) ── -->
+<!-- 4e → OSR catalyst -->
+<path d="M242 210 L210 210 L210 524 L210 524" class="arr-cross" marker-end="url(#arr-cross)"/>
+<!-- AW fans out to DW and MH -->
+<path d="M568 474 L516 474 L516 524" class="arr-cross" marker-end="url(#arr-cross)"/>
+<path d="M568 474 L620 474 L620 524" class="arr-cross" marker-end="url(#arr-cross)"/>
+<!-- Blades → Spire/FitD diaspora -->
+<path d="M568 760 L640 760 L640 838 L666 838" class="arr-cross" marker-end="url(#arr-cross)"/>
+<!-- OGL Crisis → Shadowdark -->
+<path d="M242 1180 L228 1180 L228 1230" class="arr-cross" marker-end="url(#arr-cross)"/>
+<!-- OGL Crisis → Draw Steel -->
+<path d="M340 1202 L340 1218" class="arr-cross" marker-end="url(#arr-cross)"/>
+<!-- Rhapsody → Voidheart -->
+<path d="M568 1086 L568 1158" class="arr-cross" marker-end="url(#arr-cross)"/>
+
+<!-- ── LEGEND ── -->
+<rect x="14" y="1454" width="652" height="96" rx="8" fill="none" stroke="var(--border)" stroke-width="0.8"/>
+
+<rect x="30" y="1472" width="10" height="10" rx="2" style="fill:var(--coral-fill);stroke:var(--coral-stroke);stroke-width:0.6"/>
+<text class="ts" x="46" y="1481" style="fill:var(--text2)">OSR &amp; Neo-Trad</text>
+
+<rect x="168" y="1472" width="10" height="10" rx="2" style="fill:var(--teal-fill);stroke:var(--teal-stroke);stroke-width:0.6"/>
+<text class="ts" x="184" y="1481" style="fill:var(--text2)">Mainstream / D&amp;D</text>
+
+<rect x="316" y="1472" width="10" height="10" rx="2" style="fill:var(--purple-fill);stroke:var(--purple-stroke);stroke-width:0.6"/>
+<text class="ts" x="332" y="1481" style="fill:var(--text2)">Story Games &amp; Indie</text>
+
+<line x1="30" y1="1508" x2="58" y2="1508" stroke="var(--text3)" stroke-width="1.2" marker-end="url(#arr)"/>
+<text class="ts" x="66" y="1512" style="fill:var(--text2)">Direct lineage</text>
+
+<line x1="180" y1="1508" x2="208" y2="1508" stroke="var(--text3)" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr-cross)"/>
+<text class="ts" x="216" y="1512" style="fill:var(--text2)">Cross-lineage influence</text>
+
+<text class="ts" x="390" y="1512" style="fill:var(--text2)">⭐ = in your collection</text>
+<text class="ts" x="30" y="1536" style="fill:var(--text3)">Click any node to see details in the sidebar. Use the search and filter buttons in the header. Print / Export to PDF via the button above.</text>
+
+</svg>
+
+<div class="legend-area">
+  <strong>Your collection at a glance:</strong><br>
+  <span style="color:var(--coral-text)">■</span> OSR: Hyperborea · Dolmenwood · Old-School Essentials · Cairn · Mausritter · Mythic Bastionland QS · OSRIC<br>
+  <span style="color:var(--purple-text)">■</span> Story Games: Apocalypse World · Blades in the Dark (+ Blades 68 backer) · Brindlewood Bay · Monster of the Week · Ironsworn · Wanderhome · Under Hollow Hills · Spire · Rhapsody of Blood · Voidheart · Vale · Never Going Home · Lady Blackbird<br>
+  <span style="color:var(--teal-text)">■</span> Mainstream: AD&amp;D 2e/3e/5e · CoC · Delta Green · Night's Black Agents · WFRP · Deadlands · Cyberpunk Red · Vaesen · Masks · Castle Falkenstein
+</div>
+
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <h2>Details</h2>
+  <p class="sidebar-empty" id="sidebar-empty">Click any node on the chart to see details here.</p>
+  <div id="sidebar-content" style="display:none; display:flex; flex-direction:column; gap:10px;">
+    <div class="detail-title" id="d-title"></div>
+    <div class="detail-meta"  id="d-meta"></div>
+    <div id="d-badges"></div>
+    <hr class="divider">
+    <div class="detail-desc" id="d-desc"></div>
+    <div class="detail-tags" id="d-tags"></div>
+  </div>
+</div>
+</div>
+
+<script>
+  let activeFilter = null;
+  let activeNode = null;
+
+  function selectNode(el, data) {
+    if (activeNode) activeNode.classList.remove('highlighted');
+    activeNode = el;
+    el.classList.add('highlighted');
+
+    document.getElementById('sidebar-empty').style.display = 'none';
+    const sc = document.getElementById('sidebar-content');
+    sc.style.display = 'flex';
+
+    document.getElementById('d-title').textContent = data.title;
+    document.getElementById('d-meta').textContent  = data.meta || '';
+
+    const bdg = document.getElementById('d-badges');
+    bdg.innerHTML = '';
+    const lineageMap = {osr:'OSR & Neo-Trad',main:'Mainstream / D&D',story:'Story Games & Indie'};
+    const cls = {osr:'badge-osr',main:'badge-main',story:'badge-story'}[data.lineage] || 'badge-osr';
+    const b = document.createElement('span');
+    b.className = 'detail-badge ' + cls;
+    b.textContent = lineageMap[data.lineage] || data.lineage;
+    bdg.appendChild(b);
+
+    document.getElementById('d-desc').textContent = data.desc || '';
+    document.getElementById('d-tags').textContent  = (data.tags || []).join('  ');
+  }
+
+  function doSearch(q) {
+    const nodes = document.querySelectorAll('#chart .node');
+    q = q.toLowerCase().trim();
+    nodes.forEach(n => {
+      if (!q) { n.classList.remove('dimmed'); return; }
+      const id    = (n.dataset.id || '').toLowerCase();
+      const texts = Array.from(n.querySelectorAll('text')).map(t=>t.textContent).join(' ').toLowerCase();
+      const match = texts.includes(q) || id.includes(q);
+      n.classList.toggle('dimmed', !match);
+    });
+  }
+
+  function toggleFilter(type) {
+    const btn = document.getElementById('btn-' + type);
+    if (activeFilter === type) {
+      activeFilter = null;
+      btn.className = 'filter-btn';
+      document.querySelectorAll('#chart .node').forEach(n => n.classList.remove('dimmed'));
+    } else {
+      if (activeFilter) {
+        document.getElementById('btn-' + activeFilter).className = 'filter-btn';
+      }
+      activeFilter = type;
+      btn.className = 'filter-btn active-' + type;
+      document.querySelectorAll('#chart .node').forEach(n => {
+        n.classList.toggle('dimmed', n.dataset.lineage !== type && !n.dataset.id.startsWith('hdr'));
+      });
+    }
+  }
+
+  function resetAll() {
+    if (activeFilter) {
+      document.getElementById('btn-' + activeFilter).className = 'filter-btn';
+      activeFilter = null;
+    }
+    document.querySelectorAll('#chart .node').forEach(n => n.classList.remove('dimmed'));
+    document.getElementById('search').value = '';
+  }
+</script>
+
+
+<script>
+
+  let activeFilter = null;
+  let activeNode = null;
+
+  function selectNode(el, data) {
+    if (activeNode) activeNode.classList.remove('highlighted');
+    activeNode = el;
+    el.classList.add('highlighted');
+
+    document.getElementById('sidebar-empty').style.display = 'none';
+    const sc = document.getElementById('sidebar-content');
+    sc.style.display = 'flex';
+
+    document.getElementById('d-title').textContent = data.title;
+    document.getElementById('d-meta').textContent  = data.meta || '';
+
+    const bdg = document.getElementById('d-badges');
+    bdg.innerHTML = '';
+    const lineageMap = {osr:'OSR & Neo-Trad',main:'Mainstream / D&D',story:'Story Games & Indie'};
+    const cls = {osr:'badge-osr',main:'badge-main',story:'badge-story'}[data.lineage] || 'badge-osr';
+    const b = document.createElement('span');
+    b.className = 'detail-badge ' + cls;
+    b.textContent = lineageMap[data.lineage] || data.lineage;
+    bdg.appendChild(b);
+
+    document.getElementById('d-desc').textContent = data.desc || '';
+    document.getElementById('d-tags').textContent  = (data.tags || []).join('  ');
+  }
+
+  function doSearch(q) {
+    const nodes = document.querySelectorAll('#chart .node');
+    q = q.toLowerCase().trim();
+    nodes.forEach(n => {
+      if (!q) { n.classList.remove('dimmed'); return; }
+      const id    = (n.dataset.id || '').toLowerCase();
+      const texts = Array.from(n.querySelectorAll('text')).map(t=>t.textContent).join(' ').toLowerCase();
+      const match = texts.includes(q) || id.includes(q);
+      n.classList.toggle('dimmed', !match);
+    });
+  }
+
+  function toggleFilter(type) {
+    const btn = document.getElementById('btn-' + type);
+    if (activeFilter === type) {
+      activeFilter = null;
+      btn.className = 'filter-btn';
+      document.querySelectorAll('#chart .node').forEach(n => n.classList.remove('dimmed'));
+    } else {
+      if (activeFilter) {
+        document.getElementById('btn-' + activeFilter).className = 'filter-btn';
+      }
+      activeFilter = type;
+      btn.className = 'filter-btn active-' + type;
+      document.querySelectorAll('#chart .node').forEach(n => {
+        n.classList.toggle('dimmed', n.dataset.lineage !== type && !n.dataset.id.startsWith('hdr'));
+      });
+    }
+  }
+
+  function resetAll() {
+    if (activeFilter) {
+      document.getElementById('btn-' + activeFilter).className = 'filter-btn';
+      activeFilter = null;
+    }
+    document.querySelectorAll('#chart .node').forEach(n => n.classList.remove('dimmed'));
+    document.getElementById('search').value = '';
+  }
+
+</script>
+</body>
+</html>
